@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class Registrarse : AppCompatActivity() {
     private lateinit var autentication: FirebaseAuth
+    private var nombre: String? = null
     private var email: String? = null
     private var password: String? = null
     private lateinit var bind: ActivityRegistrarseBinding
@@ -22,13 +23,15 @@ class Registrarse : AppCompatActivity() {
         autentication = FirebaseAuth.getInstance()
 
         bind.buttonRegistrarse.setOnClickListener {
-            if (cogerEmail() != null && cogerPassword() != null) {
+            if (cogerEmail() != null && cogerPassword() != null && cogerNombre() != null) {
                 autentication.createUserWithEmailAndPassword(email!!, password!!)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(this, "Registrado correctamente", Toast.LENGTH_SHORT)
                                 .show()
                             var intent = Intent(this, MainActivity::class.java)
+                            var usuario = Usuario(autentication.uid!!, nombre!!, email!!, password!!)
+                            Utilidades.subirUsuario(usuario)
                             startActivity(intent)
                             finish()
                         } else {
@@ -62,6 +65,18 @@ class Registrarse : AppCompatActivity() {
             bind.textInputLayoutPass.error = null
             password = bind.pass.text.toString()
             password
+        }
+
+    }
+
+    private fun cogerNombre(): String? {
+        return if (bind.nombre.text.toString().isNullOrBlank()) {
+            bind.textInputLayoutNombre.error = "Nombre esta vacio"
+            null
+        } else {
+            bind.textInputLayoutNombre.error = null
+            nombre = bind.nombre.text.toString()
+            nombre
         }
 
     }

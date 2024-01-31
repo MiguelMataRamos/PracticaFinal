@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var autentication: FirebaseAuth
     private var email: String? = null
     private var password: String? = null
-    private var user : FirebaseUser? = null
+    private var user: FirebaseUser? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityMainBinding.inflate(layoutInflater)
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         //si el usuario esta logeado se le redirige a la actividad inicio
         user = autentication.currentUser
-        if (user != null){
+        if (user != null) {
             var intent = Intent(this, Inicio::class.java)
             startActivity(intent)
         }
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         //sirve para abrir la actividad ver
         bind.buttonLogin.setOnClickListener {
-            if (cogerEmail() != null && cogerPassword() != null) {
+           if (cogerEmail() != null && cogerPassword() != null) {
                 autentication.signInWithEmailAndPassword(email!!, password!!)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
@@ -57,21 +57,22 @@ class MainActivity : AppCompatActivity() {
 
     //se cogen los datos del email y la contraseña
     private fun cogerEmail(): String? {
-        return if (bind.mail.text.toString().isNullOrBlank()){
+        return if (bind.mail.text.toString().isNullOrBlank()) {
             bind.textInputLayoutEmail.error = "Email esta vacio"
             null
-        }else{
+        } else {
             bind.textInputLayoutEmail.error = null
             email = bind.mail.text.toString()
             email
         }
 
     }
+
     private fun cogerPassword(): String? {
         return if (bind.pass.text.toString().isNullOrBlank()) {
             bind.textInputLayoutPass.error = "Contraseña esta vacia"
             null
-        }else{
+        } else {
             bind.textInputLayoutPass.error = null
             password = bind.pass.text.toString()
             password
