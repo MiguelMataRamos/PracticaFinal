@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             var intent = Intent(this, Inicio::class.java)
                             startActivity(intent)
+                            finish()
                         } else {
                             bind.textInputLayoutEmail.error = "Email o contraseña incorrectos"
                             bind.textInputLayoutPass.error = "Email o contraseña incorrectos"

@@ -30,6 +30,7 @@ class Registrarse : AppCompatActivity() {
                                 .show()
                             var intent = Intent(this, MainActivity::class.java)
                             startActivity(intent)
+                            finish()
                         } else {
                             Toast.makeText(this, "Error al registrarse", Toast.LENGTH_SHORT).show()
                         }
