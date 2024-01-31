@@ -22,11 +22,13 @@ class Inicio : AppCompatActivity() {
 
         //coger el usuario de la base de datos y guardarlo en la variable user como objeto de la clase Usuario
         db_ref.child("Usuarios").child(auth.uid!!).get().addOnSuccessListener {
-            user = it.getValue(Usuario::class.java)
-
+            var user1 = it.getValue(Usuario::class.java)
+            user = user1
         }
 
 
 
+
     }
+
 }
