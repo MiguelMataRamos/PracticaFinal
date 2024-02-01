@@ -20,6 +20,9 @@ class MainActivity : AppCompatActivity() {
         bind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bind.root)
 
+        //quitar menu superior
+        supportActionBar?.hide()
+
         //se coge la instancia de la autenticacion
         autentication = FirebaseAuth.getInstance()
 

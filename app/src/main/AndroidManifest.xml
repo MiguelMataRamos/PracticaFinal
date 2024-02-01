@@ -12,18 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PracticaFinal"
         tools:targetApi="31">
-        <activity
-            android:name=".InicioCliente"
-            android:exported="false"
-            android:label="@string/title_activity_inicio_cliente" />
-        <activity
-            android:name=".InicioAdministrador"
-            android:exported="false"
-            android:label="@string/title_activity_inicio_administrador" />
-        <activity
-            android:name=".InicioAdmin"
-            android:exported="false"
-            android:label="@string/title_activity_inicio_admin" />
+
+
         <activity
             android:name=".PantallaCarga"
             android:exported="false"

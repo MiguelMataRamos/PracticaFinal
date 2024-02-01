@@ -15,6 +15,9 @@ class PantallaCarga : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantalla_carga)
+        //quitar menu superior
+        supportActionBar?.hide()
+
         var sp = PreferenceManager.getDefaultSharedPreferences(this@PantallaCarga)
 
         var db_ref = FirebaseDatabase.getInstance().reference
