@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         //si el usuario esta logeado se le redirige a la actividad inicio
         user = autentication.currentUser
         if (user != null) {
-            var intent = Intent(this, Inicio::class.java)
+            var intent = Intent(this, PantallaCarga::class.java)
             startActivity(intent)
         }
 
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                 autentication.signInWithEmailAndPassword(email!!, password!!)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
-                            var intent = Intent(this, Inicio::class.java)
+                            var intent = Intent(this, PantallaCarga::class.java)
                             startActivity(intent)
                             finish()
                         } else {

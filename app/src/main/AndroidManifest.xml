@@ -13,8 +13,14 @@
         android:theme="@style/Theme.PracticaFinal"
         tools:targetApi="31">
         <activity
-            android:name=".Inicio"
-            android:exported="false" />
+            android:name=".InicioAdmin"
+            android:exported="false"
+            android:label="@string/title_activity_inicio_admin" />
+        <activity
+            android:name=".PantallaCarga"
+            android:exported="false"
+            android:theme="@style/Base.Theme.PracticaFinal2"/>
+
         <activity
             android:name=".Registrarse"
             android:exported="false" />
