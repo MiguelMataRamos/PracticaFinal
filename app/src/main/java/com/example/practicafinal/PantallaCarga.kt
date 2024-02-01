@@ -30,16 +30,17 @@ class PantallaCarga : AppCompatActivity() {
                 putString("email_user", user?.email)
                 putString("admin_user", user?.admin)
                 putString("id_user", user?.id)
+                putString("admin", user?.admin)
                 apply()
             }
 
             withContext(Dispatchers.Main){
                 if (user?.admin == "1") {
-                    var intent = Intent(this@PantallaCarga, InicioAdministrador::class.java)
-                    startActivity(intent)
+
+//                    var intent = Intent(this@PantallaCarga, InicioAdministrador::class.java)
+//                    startActivity(intent)
                 }else if (user?.admin == "0"){
-                    var intent = Intent(this@PantallaCarga, InicioCliente::class.java)
-                    startActivity(intent)
+
                 }
             }
 
