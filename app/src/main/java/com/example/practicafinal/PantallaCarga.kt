@@ -35,7 +35,10 @@ class PantallaCarga : AppCompatActivity() {
 
             withContext(Dispatchers.Main){
                 if (user?.admin == "1") {
-                    var intent = Intent(this@PantallaCarga, InicioAdmin::class.java)
+                    var intent = Intent(this@PantallaCarga, InicioAdministrador::class.java)
+                    startActivity(intent)
+                }else if (user?.admin == "0"){
+                    var intent = Intent(this@PantallaCarga, InicioCliente::class.java)
                     startActivity(intent)
                 }
             }
