@@ -1,6 +1,7 @@
 package com.example.practicafinal
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -37,8 +38,8 @@ class PantallaCarga : AppCompatActivity() {
             withContext(Dispatchers.Main){
                 if (user?.admin == "1") {
 
-//                    var intent = Intent(this@PantallaCarga, InicioAdministrador::class.java)
-//                    startActivity(intent)
+                    var intent = Intent(this@PantallaCarga, Administrador::class.java)
+                    startActivity(intent)
                 }else if (user?.admin == "0"){
 
                 }
