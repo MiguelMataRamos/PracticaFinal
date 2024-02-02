@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.Administrador">
+    tools:context=".Administrador">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -18,6 +18,10 @@
         android:id="@+id/navMenu"
         app:menu="@menu/bottom_nav_menu"
         android:layout_gravity="bottom"
+        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/white"
+        app:backgroundTint="@color/black2"
+        app:itemActiveIndicatorStyle="@style/fondo_boton_menu"
         />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
