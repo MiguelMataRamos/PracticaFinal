@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CartasAdminFragment"
+    tools:context=".AdminPedidosFragment"
     android:background="@color/white">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SOY LA VISTA DE CARTAS ADMIN"
+        android:text="SOY LA VISTA DE PEDIDOS ADMIN"
         android:textSize="30sp"
         android:layout_gravity="center"
         android:gravity="center"
