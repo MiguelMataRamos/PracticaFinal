@@ -40,11 +40,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/euro"
+            android:text="50"
+            android:textSize="25sp"
+            android:layout_marginTop="6dp"
+            android:id="@+id/precio"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="50€"
+            android:text="€"
             android:textSize="25sp"
             android:layout_margin="6dp"
-            android:id="@+id/precio"/>
+            android:id="@+id/euro"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,11 +90,11 @@
             />
 
 
-        <androidx.cardview.widget.CardView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/disponible"
             android:layout_width="0dp"
             android:layout_height="10dp"
-            android:backgroundTint="@color/red"
+            android:background="@color/red"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/limg"
             app:layout_constraintEnd_toEndOf="parent"

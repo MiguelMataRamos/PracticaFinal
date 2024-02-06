@@ -1,11 +1,14 @@
 package com.example.practicafinal
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicafinal.databinding.ActivityAdministradorBinding
@@ -71,7 +74,7 @@ class AdminCartasFragment : Fragment() {
         recycler = bind.scCartas
         recycler.adapter = adaptador
         //se le pasa el layout manager
-        recycler.layoutManager = LinearLayoutManager(applicationContext@context)
+        recycler.layoutManager = LinearLayoutManager(applicationContext@ context)
         //se le dice que el tamaño del recycler no cambiara
         recycler.setHasFixedSize(true)
 
@@ -101,6 +104,33 @@ class AdminCartasFragment : Fragment() {
 
         }
 
+        bind.lupa.setOnClickListener {
+            mostrarBusqueda()
+        }
+
+        bind.close.setOnClickListener {
+            ocultarBusqueda()
+        }
+
+    }
+
+    fun mostrarBusqueda() {
+        bind.close.visibility = View.VISIBLE
+        bind.lupa.visibility = View.INVISIBLE
+        bind.buscarEt.visibility = View.VISIBLE
+        val inputMethodManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(bind.buscarEt, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    fun ocultarBusqueda() {
+        bind.close.visibility = View.INVISIBLE
+        bind.lupa.visibility = View.VISIBLE
+        bind.buscarEt.visibility = View.INVISIBLE
+        val inputMethodManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(bind.buscarEt.windowToken, 0)
+        bind.buscarEt.setText("")
     }
 
     companion object {

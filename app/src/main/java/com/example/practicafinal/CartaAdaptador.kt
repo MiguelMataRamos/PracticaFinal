@@ -2,6 +2,7 @@ package com.example.practicafinal
 
 import android.app.AlertDialog
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,7 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
         val precio: TextView = itemView.findViewById(R.id.precio)
         val categoria: TextView = itemView.findViewById(R.id.categoria)
         val imagen: ImageView = itemView.findViewById(R.id.img)
-        val disponible: CardView = itemView.findViewById(R.id.disponible)
+        val disponible: View = itemView.findViewById(R.id.disponible)
 
     }
 
@@ -43,12 +44,12 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
         holder.nombre.text = item_actual.nombre
         holder.precio.text = item_actual.precio
         holder.categoria.text = item_actual.categoria
-        holder.disponible.setCardBackgroundColor(
-            when (item_actual.disponible) {
-                true -> contexto.resources.getColor(R.color.green)
-                else -> contexto.resources.getColor(R.color.red)
-            }
-        )
+
+        if (item_actual.disponible) {
+            holder.disponible.setBackgroundColor(contexto.resources.getColor(R.color.green))
+        } else {
+            holder.disponible.setBackgroundColor(contexto.resources.getColor(R.color.red))
+        }
 
         val URL: String? = when (item_actual.imagen) {
             "" -> null
