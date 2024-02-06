@@ -1,8 +1,12 @@
 package com.example.practicafinal
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import android.view.animation.DecelerateInterpolator
+import android.widget.Button
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -56,6 +60,8 @@ class Utilidades(context: Context) {
                 .error(R.drawable.fotodef)
             return options
         }
+
+
     }
 
 

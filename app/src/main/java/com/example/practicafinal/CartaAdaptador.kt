@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -13,7 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.FirebaseDatabase
 
-class CartaAdaptador(private var lista_cartas: MutableList<Carta>) : RecyclerView.Adapter<CartaAdaptador.CartaViewHolder>() {
+class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
+    RecyclerView.Adapter<CartaAdaptador.CartaViewHolder>(), Filterable {
     private lateinit var contexto: Context
     private var lista_filtrada = lista_cartas
 
@@ -27,7 +30,8 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) : RecyclerVie
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartaViewHolder {
-        val vista_item = LayoutInflater.from(parent.context).inflate(R.layout.item_carta, parent, false)
+        val vista_item =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_carta, parent, false)
         contexto = parent.context
         return CartaViewHolder(vista_item)
     }
@@ -61,10 +65,11 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) : RecyclerVie
         holder.itemView.setOnLongClickListener {
             AlertDialog.Builder(contexto)
                 .setTitle("Borrar")
-                .setMessage("¿Estás seguro de que quieres borrar "+item_actual.nombre!!.uppercase()+"?")
+                .setMessage("¿Estás seguro de que quieres borrar " + item_actual.nombre!!.uppercase() + "?")
                 .setPositiveButton("Sí") { _, _ ->
                     val carta = lista_filtrada[position]
-                    FirebaseDatabase.getInstance().getReference("Tienda/Cartas/${carta.id}").removeValue()
+                    FirebaseDatabase.getInstance().getReference("Tienda/Cartas/${carta.id}")
+                        .removeValue()
                     lista_filtrada.removeAt(position)
                     notifyItemRemoved(position)
                     Toast.makeText(contexto, "Carta borrada con éxito", Toast.LENGTH_SHORT).show()
@@ -75,5 +80,32 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) : RecyclerVie
         }
 
 
+    }
+
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(p0: CharSequence?): FilterResults {
+                val busqueda = p0.toString().lowercase()
+                if (busqueda.isEmpty()) {
+                    lista_filtrada = lista_cartas
+                } else {
+                    lista_filtrada = (lista_cartas.filter {
+                        it.nombre.toString().lowercase().contains(busqueda)
+                    }) as MutableList<Carta>
+                }
+
+                val filterResults = FilterResults()
+                filterResults.values = lista_filtrada
+
+                return filterResults
+
+            }
+
+            override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+                notifyDataSetChanged()
+            }
+
+        }
     }
 }
