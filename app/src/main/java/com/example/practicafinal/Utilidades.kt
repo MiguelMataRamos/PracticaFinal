@@ -13,11 +13,11 @@ class Utilidades(context: Context) {
     companion object {
         fun subirUsuario(usuario: Usuario) {
             var db_ref = FirebaseDatabase.getInstance().reference
-            db_ref.child("Usuarios").child(usuario.id).setValue(usuario)
+            db_ref.child("Tienda").child("Usuarios").child(usuario.id).setValue(usuario)
         }
         suspend fun cogerUsuario(db_ref: DatabaseReference):Usuario?{
             var user:Usuario? = null
-            val datasnapshot = db_ref.child("Usuarios").child(FirebaseAuth.getInstance().uid!!).get().await()
+            val datasnapshot = db_ref.child("Tienda").child("Usuarios").child(FirebaseAuth.getInstance().uid!!).get().await()
             user = datasnapshot.getValue(Usuario::class.java)
             return user
         }

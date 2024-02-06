@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.practicafinal.databinding.FragmentAddCartaBinding
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,6 +50,9 @@ class AddCartaFragment: Fragment(), CoroutineScope {
             param2 = it.getString(ARG_PARAM2)
         }
         bind = FragmentAddCartaBinding.inflate(layoutInflater)
+
+        db_ref = FirebaseDatabase.getInstance().reference
+
     }
 
     override fun onCreateView(
@@ -90,10 +94,8 @@ class AddCartaFragment: Fragment(), CoroutineScope {
                     Utilidades.subirCarta(nuevacarta)
                 }
 
-
-
                 Toast.makeText(requireContext(), "Carta guardada con exito", Toast.LENGTH_SHORT).show()
-
+                limpiar()
             }
         }
 
@@ -112,7 +114,7 @@ class AddCartaFragment: Fragment(), CoroutineScope {
         }
     }
 
-    fun validar():Boolean{
+    private fun validar():Boolean{
         var nombre = true
         var precio = true
         var categoria = true
@@ -159,8 +161,8 @@ class AddCartaFragment: Fragment(), CoroutineScope {
         bind.etPrecio.text = null
         bind.spCat.setSelection(0)
         bind.chkDisponible.isChecked = false
+        bind.img.setImageResource(R.drawable.ic_menu_camera)
 
-        urlimg = null
     }
 
 
