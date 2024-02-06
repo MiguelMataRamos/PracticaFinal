@@ -44,6 +44,10 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
         holder.nombre.text = item_actual.nombre
         holder.precio.text = item_actual.precio
         holder.categoria.text = item_actual.categoria
+        if (item_actual.categoria == "Negro"){
+
+        }
+
 
         if (item_actual.disponible) {
             holder.disponible.setBackgroundColor(contexto.resources.getColor(R.color.green))

@@ -2,6 +2,8 @@ package com.example.practicafinal
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -111,6 +113,25 @@ class AdminCartasFragment : Fragment() {
         bind.close.setOnClickListener {
             ocultarBusqueda()
         }
+
+        bind.buscarEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                null
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Este método se llama cuando el texto cambia
+                val textoIngresado = s.toString()
+                // Puedes hacer algo con el texto ingresado aquí
+                // Por ejemplo, puedes imprimirlo en la consola
+                adaptador.filter.filter((textoIngresado))
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                null
+            }
+
+        })
 
     }
 

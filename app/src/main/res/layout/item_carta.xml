@@ -61,7 +61,7 @@
             android:id="@+id/categoriatxt"
             app:layout_constraintTop_toBottomOf="@id/nombre"
             app:layout_constraintStart_toEndOf="@id/limg"
-            android:text="Categoria:"
+            android:text="@string/categoria"
             android:layout_margin="10sp"
             android:textSize="19sp"
             app:layout_constraintBottom_toTopOf="@id/disponible"/>
