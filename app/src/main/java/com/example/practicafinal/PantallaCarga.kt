@@ -37,7 +37,6 @@ class PantallaCarga : AppCompatActivity() {
 
             withContext(Dispatchers.Main){
                 if (user?.admin == "1") {
-
                     var intent = Intent(this@PantallaCarga, Administrador::class.java)
                     startActivity(intent)
                 }else if (user?.admin == "0"){

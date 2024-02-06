@@ -84,7 +84,7 @@ class AddCartaFragment: Fragment(), CoroutineScope {
             if (validar()){
                 var id_generado: String? = db_ref.child("Tienda").child("Cartas").push().key
                 var nombre = bind.etNombre.text.toString()
-                var precio = bind.etNombre.text.toString()
+                var precio = bind.etPrecio.text.toString()
                 var categoria = bind.spCat.selectedItem.toString()
                 var disponible = bind.chkDisponible.isChecked
                 launch {
