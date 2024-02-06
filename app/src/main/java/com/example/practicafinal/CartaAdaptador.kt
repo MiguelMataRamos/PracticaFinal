@@ -50,9 +50,9 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
 
 
         if (item_actual.disponible) {
-            holder.disponible.setBackgroundColor(contexto.resources.getColor(R.color.green))
+            holder.disponible.background = contexto.getDrawable(R.drawable.fondo_disponible)
         } else {
-            holder.disponible.setBackgroundColor(contexto.resources.getColor(R.color.red))
+            holder.disponible.background = contexto.getDrawable(R.drawable.fondo_nodisponible)
         }
 
         val URL: String? = when (item_actual.imagen) {
