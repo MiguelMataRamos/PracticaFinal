@@ -1,14 +1,17 @@
 package com.example.practicafinal
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.database.FirebaseDatabase
 
 class CartaAdaptador(private var lista_cartas: MutableList<Carta>) : RecyclerView.Adapter<CartaAdaptador.CartaViewHolder>() {
     private lateinit var contexto: Context
@@ -55,6 +58,21 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) : RecyclerVie
             .into(holder.imagen)
 
 
+        holder.itemView.setOnLongClickListener {
+            AlertDialog.Builder(contexto)
+                .setTitle("Borrar")
+                .setMessage("¿Estás seguro de que quieres borrar "+item_actual.nombre!!.uppercase()+"?")
+                .setPositiveButton("Sí") { _, _ ->
+                    val carta = lista_filtrada[position]
+                    FirebaseDatabase.getInstance().getReference("Tienda/Cartas/${carta.id}").removeValue()
+                    lista_filtrada.removeAt(position)
+                    notifyItemRemoved(position)
+                    Toast.makeText(contexto, "Carta borrada con éxito", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("No", null)
+                .show()
+            true
+        }
 
 
     }
