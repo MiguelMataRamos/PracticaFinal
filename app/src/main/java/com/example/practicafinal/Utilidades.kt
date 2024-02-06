@@ -11,8 +11,9 @@ import kotlinx.coroutines.tasks.await
 
 class Utilidades(context: Context) {
     companion object {
+        var db_ref = FirebaseDatabase.getInstance().reference
+        var st = FirebaseStorage.getInstance().reference
         fun subirUsuario(usuario: Usuario) {
-            var db_ref = FirebaseDatabase.getInstance().reference
             db_ref.child("Tienda").child("Usuarios").child(usuario.id).setValue(usuario)
         }
         suspend fun cogerUsuario(db_ref: DatabaseReference):Usuario?{
@@ -23,7 +24,6 @@ class Utilidades(context: Context) {
         }
 
         suspend fun guardarImagenCarta(idGenerado: String, urlimg: Uri): String {
-            var st = FirebaseStorage.getInstance().reference
 
             lateinit var urlimagenfirebase: Uri
 
@@ -35,7 +35,6 @@ class Utilidades(context: Context) {
         }
 
         fun subirCarta(nuevacarta: Carta) {
-            var db_ref = FirebaseDatabase.getInstance().reference
             db_ref.child("Tienda").child("Cartas").child(nuevacarta.id!!).setValue(nuevacarta)
         }
     }

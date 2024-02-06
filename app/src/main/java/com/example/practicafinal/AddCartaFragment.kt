@@ -162,7 +162,6 @@ class AddCartaFragment: Fragment(), CoroutineScope {
         bind.spCat.setSelection(0)
         bind.chkDisponible.isChecked = false
         bind.img.setImageResource(R.drawable.ic_menu_camera)
-
     }
 
 

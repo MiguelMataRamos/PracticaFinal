@@ -37,6 +37,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sc_cartas"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintBottom_toTopOf="@id/btn_agregar_carta"
+            tools:listitem="@layout/item_carta" />
+
         <Button
             android:id="@+id/btn_agregar_carta"
             android:layout_width="match_parent"
