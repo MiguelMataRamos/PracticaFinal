@@ -6,8 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.practicafinal.databinding.ActivityAdministradorBinding
 import com.example.practicafinal.databinding.FragmentAdminCartasBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +28,10 @@ private const val ARG_PARAM2 = "param2"
  */
 class AdminCartasFragment : Fragment() {
     private lateinit var bind: FragmentAdminCartasBinding
+    private lateinit var lista: MutableList<Carta>
+    private lateinit var db_ref: DatabaseReference
+    private lateinit var recycler: RecyclerView
+    private lateinit var adaptador: CartaAdaptador
 
 
     // TODO: Rename and change types of parameters
@@ -35,6 +46,34 @@ class AdminCartasFragment : Fragment() {
         }
         bind = FragmentAdminCartasBinding.inflate(layoutInflater)
 
+        db_ref = FirebaseDatabase.getInstance().reference
+        lista = mutableListOf()
+
+        //se coge la lista de productos de la base de datos
+        db_ref.child("Tienda").child("Cartas").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                lista.clear()
+                snapshot.children.forEach { hijo: DataSnapshot? ->
+                    val pojocarta = hijo!!.getValue(Carta::class.java)
+                    lista.add(pojocarta!!)
+                }
+                recycler.adapter?.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println(error.message)
+            }
+        })
+
+        //se crea el adaptador y se le pasa la lista de productos
+        adaptador = CartaAdaptador(lista)
+        //se le pasa el adaptador al recycler
+        recycler = bind.scCartas
+        recycler.adapter = adaptador
+        //se le pasa el layout manager
+        recycler.layoutManager = LinearLayoutManager(applicationContext@context)
+        //se le dice que el tamaño del recycler no cambiara
+        recycler.setHasFixedSize(true)
 
 
     }
@@ -50,6 +89,7 @@ class AdminCartasFragment : Fragment() {
 
 
     }
+
     override fun onStart() {
         super.onStart()
         bind.btnAgregarCarta.setOnClickListener {

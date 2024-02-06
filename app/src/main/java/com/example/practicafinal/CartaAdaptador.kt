@@ -1,0 +1,61 @@
+package com.example.practicafinal
+
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+
+class CartaAdaptador(private var lista_cartas: MutableList<Carta>) : RecyclerView.Adapter<CartaAdaptador.CartaViewHolder>() {
+    private lateinit var contexto: Context
+    private var lista_filtrada = lista_cartas
+
+    class CartaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val nombre: TextView = itemView.findViewById(R.id.nombre)
+        val precio: TextView = itemView.findViewById(R.id.precio)
+        val categoria: TextView = itemView.findViewById(R.id.categoria)
+        val imagen: ImageView = itemView.findViewById(R.id.img)
+        val disponible: CardView = itemView.findViewById(R.id.disponible)
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartaViewHolder {
+        val vista_item = LayoutInflater.from(parent.context).inflate(R.layout.item_carta, parent, false)
+        contexto = parent.context
+        return CartaViewHolder(vista_item)
+    }
+
+    override fun getItemCount(): Int = lista_filtrada.size
+
+    override fun onBindViewHolder(holder: CartaViewHolder, position: Int) {
+        val item_actual = lista_filtrada[position]
+        holder.nombre.text = item_actual.nombre
+        holder.precio.text = item_actual.precio
+        holder.categoria.text = item_actual.categoria
+        holder.disponible.setCardBackgroundColor(
+            when (item_actual.disponible) {
+                true -> contexto.resources.getColor(R.color.green)
+                else -> contexto.resources.getColor(R.color.red)
+            }
+        )
+
+        val URL: String? = when (item_actual.imagen) {
+            "" -> null
+            else -> item_actual.imagen
+        }
+
+        Glide.with(contexto)
+            .load(URL)
+            .apply(Utilidades.opcionesGlide(contexto))
+            .transition(Utilidades.transicion)
+            .into(holder.imagen)
+
+
+
+
+    }
+}

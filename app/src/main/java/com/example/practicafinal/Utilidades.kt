@@ -3,6 +3,8 @@ package com.example.practicafinal
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -36,6 +38,23 @@ class Utilidades(context: Context) {
 
         fun subirCarta(nuevacarta: Carta) {
             db_ref.child("Tienda").child("Cartas").child(nuevacarta.id!!).setValue(nuevacarta)
+        }
+
+
+        fun animacion_carga(contexto: Context): CircularProgressDrawable {
+            val animacion = CircularProgressDrawable(contexto)
+            animacion.strokeWidth = 5f
+            animacion.centerRadius = 30f
+            animacion.start()
+            return animacion
+        }
+        val transicion = DrawableTransitionOptions.withCrossFade(500)
+        fun opcionesGlide(context: Context): com.bumptech.glide.request.RequestOptions {
+            val options = com.bumptech.glide.request.RequestOptions()
+                .placeholder(animacion_carga(context))
+                .fallback(R.drawable.fotodef)
+                .error(R.drawable.fotodef)
+            return options
         }
     }
 
