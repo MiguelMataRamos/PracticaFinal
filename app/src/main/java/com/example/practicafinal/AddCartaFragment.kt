@@ -1,7 +1,10 @@
 package com.example.practicafinal
 
 import android.R
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -11,6 +14,12 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.practicafinal.databinding.FragmentAddCartaBinding
+import com.google.firebase.database.DatabaseReference
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,8 +31,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [AddCartaFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AddCartaFragment : Fragment() {
+class AddCartaFragment: Fragment(), CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+    private lateinit var db_ref: DatabaseReference
     private lateinit var bind: FragmentAddCartaBinding
+    private var urlimg: Uri? = null
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -49,8 +62,54 @@ class AddCartaFragment : Fragment() {
         bind.spCat.adapter = adapter
 
 
+
+
         // Inflate the layout for this fragment
         return bind.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        bind.card.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 100)
+        }
+
+        bind.btnCrear.setOnClickListener {
+            if (validar()){
+                var id_generado: String? = db_ref.child("Tienda").child("Cartas").push().key
+                var nombre = bind.etNombre.text.toString()
+                var precio = bind.etNombre.text.toString()
+                var categoria = bind.spCat.selectedItem.toString()
+                var disponible = bind.chkDisponible.isChecked
+                launch {
+                    var urlimgfirebase = Utilidades.guardarImagenCarta(id_generado!!, urlimg!!)
+                    var nuevacarta = Carta(id_generado, nombre, categoria, precio,disponible, urlimgfirebase)
+
+                    Utilidades.subirCarta(nuevacarta)
+                }
+
+
+
+                Toast.makeText(requireContext(), "Carta guardada con exito", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+
+
+
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
+            val selectedImage = data.data
+            // Aquí puedes usar la URI de la imagen seleccionada
+            urlimg = selectedImage
+            // Por ejemplo, puedes establecerla en un ImageView
+            bind.img.setImageURI(selectedImage)
+        }
     }
 
     fun validar():Boolean{
@@ -82,14 +141,27 @@ class AddCartaFragment : Fragment() {
             categoria = true
         }
 
+        if (urlimg == null){
+            Toast.makeText(requireContext(), "Selecciona una imagen", Toast.LENGTH_SHORT).show()
+            foto = false
+        }else{
+            foto = true
+        }
 
 
-        return nombre && precio && categoria
+        return nombre && precio && categoria && foto
 
     }
 
 
+    fun limpiar(){
+        bind.etNombre.text = null
+        bind.etPrecio.text = null
+        bind.spCat.setSelection(0)
+        bind.chkDisponible.isChecked = false
 
+        urlimg = null
+    }
 
 
 
