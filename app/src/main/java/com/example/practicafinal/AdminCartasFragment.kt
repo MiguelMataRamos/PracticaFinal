@@ -21,7 +21,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class AdminCartasFragment : Fragment() {
     private lateinit var bind: FragmentAdminCartasBinding
-    private lateinit var bind2: ActivityAdministradorBinding
+
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -34,7 +34,7 @@ class AdminCartasFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
         bind = FragmentAdminCartasBinding.inflate(layoutInflater)
-        bind2 = ActivityAdministradorBinding.inflate(layoutInflater)
+
 
 
     }
