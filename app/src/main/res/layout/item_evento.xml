@@ -78,7 +78,7 @@
             app:layout_constraintTop_toBottomOf="@id/fecha"
             app:layout_constraintStart_toStartOf="@id/fecha"
             android:text="Personas: "
-            android:textSize="20sp"
+            android:textSize="18sp"
             />
 
         <TextView
@@ -86,10 +86,10 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/txtpersonas"
             app:layout_constraintBottom_toBottomOf="@id/barra"
-            android:layout_marginStart="10dp"
+
             android:text="0"
             android:id="@+id/aforo_actual"
-            android:textSize="20sp"
+            android:textSize="18sp"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -98,7 +98,7 @@
             app:layout_constraintBottom_toBottomOf="@id/txtpersonas"
             android:text="/"
             android:id="@+id/barra"
-            android:textSize="20sp"
+            android:textSize="18sp"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -107,7 +107,7 @@
             app:layout_constraintBottom_toBottomOf="@id/barra"
             android:text="10"
             android:id="@+id/aforo_max"
-            android:textSize="20sp"
+            android:textSize="18sp"
             />
 
 

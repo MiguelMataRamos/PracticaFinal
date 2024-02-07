@@ -35,13 +35,22 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/lupa"
-                android:id="@+id/lupa"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/opciones"
+                android:src="@drawable/opciones"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="20dp"
+                />
 
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/lupa"
+                android:id="@+id/lupa"
+                app:layout_constraintEnd_toStartOf="@id/opciones"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 />
             <ImageView
                 android:layout_width="40dp"
@@ -55,13 +64,15 @@
                 android:visibility="invisible"
                 />
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/buscar_et"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
                 android:hint="Buscar..."
+                android:background="@drawable/buscador"
                 android:textColor="@color/white"
+                android:textColorHint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/lupa"
                 app:layout_constraintStart_toEndOf="@id/foto_menu"

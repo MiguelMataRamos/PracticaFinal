@@ -101,24 +101,24 @@ class AdminEventosFragment : Fragment() {
             ocultarBusqueda()
         }
 
-//        bind.buscarEt.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                null
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                // Este método se llama cuando el texto cambia
-//                val textoIngresado = s.toString()
-//                // Puedes hacer algo con el texto ingresado aquí
-//                // Por ejemplo, puedes imprimirlo en la consola
-//                adaptador.filter.filter((textoIngresado))
-//            }
-//
-//            override fun afterTextChanged(p0: Editable?) {
-//                null
-//            }
-//
-//        })
+        bind.buscarEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                null
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Este método se llama cuando el texto cambia
+                val textoIngresado = s.toString()
+                // Puedes hacer algo con el texto ingresado aquí
+                // Por ejemplo, puedes imprimirlo en la consola
+                adaptador.filter.filter((textoIngresado))
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                null
+            }
+
+        })
     }
 
     fun mostrarBusqueda() {
@@ -143,6 +143,8 @@ class AdminEventosFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         // Inflate the layout for this fragment
         return bind.root
     }

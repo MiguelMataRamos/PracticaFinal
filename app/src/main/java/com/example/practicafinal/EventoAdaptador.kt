@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -13,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.database.FirebaseDatabase
 
 class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
-    RecyclerView.Adapter<EventoAdaptador.EventoViewHolder>() {
+    RecyclerView.Adapter<EventoAdaptador.EventoViewHolder>(), Filterable {
     private lateinit var contexto: Context
     private var lista_filtrada = lista_eventos
 
@@ -83,4 +85,29 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
     }
 
     override fun getItemCount(): Int = lista_filtrada.size
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(p0: CharSequence?): FilterResults {
+                val busqueda = p0.toString().lowercase()
+                if (busqueda.isEmpty()) {
+                    lista_filtrada = lista_eventos
+                } else {
+                    lista_filtrada = (lista_eventos.filter {
+                        it.nombre.toString().lowercase().contains(busqueda)
+                    }) as MutableList<Evento>
+                }
+
+                val filterResults = FilterResults()
+                filterResults.values = lista_filtrada
+
+                return filterResults
+
+            }
+
+            override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+                notifyDataSetChanged()
+            }
+
+        }
+    }
 }
