@@ -22,14 +22,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tilNombre"
-            android:layout_margin="30dp">
+            android:layout_margin="30dp"
+            >
 
             <ImageView
                 android:id="@+id/img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/fotodef" />
+                android:src="@drawable/fotodef"
+
+                />
 
         </androidx.cardview.widget.CardView>
 
@@ -88,6 +91,25 @@
                 android:layout_height="wrap_content"
                 android:hint="Aforo máximo"
                 android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilPrecio"
+            android:layout_margin="20dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fecha"
+                android:inputType="date"
+                android:focusable="false"/>
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

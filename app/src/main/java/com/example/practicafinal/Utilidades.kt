@@ -39,9 +39,22 @@ class Utilidades(context: Context) {
             return urlimagenfirebase.toString()
 
         }
+        suspend fun guardarImagenEvento(idGenerado: String, urlimg: Uri): String {
+
+            lateinit var urlimagenfirebase: Uri
+
+            urlimagenfirebase = st.child("Tienda").child("ImagenesEventos").child(idGenerado)
+                .putFile(urlimg).await().storage.downloadUrl.await()
+
+            return urlimagenfirebase.toString()
+
+        }
 
         fun subirCarta(nuevacarta: Carta) {
             db_ref.child("Tienda").child("Cartas").child(nuevacarta.id!!).setValue(nuevacarta)
+        }
+        fun subirEvento(nuevoevento: Evento) {
+            db_ref.child("Tienda").child("Eventos").child(nuevoevento.id!!).setValue(nuevoevento)
         }
 
 
