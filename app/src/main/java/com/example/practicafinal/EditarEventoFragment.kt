@@ -6,16 +6,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.example.practicafinal.databinding.FragmentEditarCartaBinding
+import com.example.practicafinal.databinding.FragmentEditarEventoBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -30,16 +29,15 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [EditarCartaFragment.newInstance] factory method to
+ * Use the [EditarEventoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class EditarCartaFragment : Fragment(), CoroutineScope {
+class EditarEventoFragment : Fragment() , CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
-    lateinit var bind: FragmentEditarCartaBinding
+    lateinit var bind: FragmentEditarEventoBinding
     private lateinit var db_ref: DatabaseReference
     private var urlimg: Uri? = null
-
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -51,49 +49,42 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
+
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        bind = FragmentEditarCartaBinding.inflate(layoutInflater)
 
+        bind = FragmentEditarEventoBinding.inflate(layoutInflater)
         db_ref = FirebaseDatabase.getInstance().reference
 
         // Obtener los datos del Bundle
         val nombre = arguments?.getString("nombre")
+        val fecha = arguments?.getString("fecha")
         val precio = arguments?.getString("precio")
-        val categoria = arguments?.getString("categoria")
         val imagen = arguments?.getString("imagen")
-        val disponible = arguments?.getBoolean("disponible")
+        val aforomax = arguments?.getString("aforomax")
+        val id = arguments?.getString("id")
 
-
-        val categorias = arrayOf("Selecciona categoria", "Blanco", "Negro", "Azul", "Verde")
-        val adapter =
-            ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, categorias)
-        bind.spCat.adapter = adapter
-
-        // Encontrar el índice de la categoría en el array de categorías
-        val index = categorias.indexOf(categoria)
-
-        // Establecer la categoría como la opción seleccionada en el Spinner
-        bind.spCat.setSelection(index)
-
-
-        // Usar los datos obtenidos...
         bind.etNombre.setText(nombre)
+        bind.etFecha.setText(fecha)
         bind.etPrecio.setText(precio)
-        bind.chkDisponible.isChecked = disponible!!
-        bind.imgEditar.setImageURI(imagen!!.toUri())
+        bind.etAforo.setText(aforomax)
+        bind.img.setImageURI(imagen!!.toUri())
 
         Glide.with(requireContext())
             .load(imagen)
             .apply(Utilidades.opcionesGlide(requireContext()))
             .transition(Utilidades.transicion)
-            .into(bind.imgEditar)
+            .into(bind.img)
 
 
+        // Inflate the layout for this fragment
         return bind.root
     }
 
@@ -106,7 +97,7 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
             // Aquí puedes usar la URI de la imagen seleccionada
             urlimg = selectedImage
             // Por ejemplo, puedes establecerla en un ImageView
-            bind.imgEditar.setImageURI(selectedImage)
+            bind.img.setImageURI(selectedImage)
         }
     }
 
@@ -122,8 +113,8 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
             if (validar()){
                 var nombre = bind.etNombre.text.toString()
                 var precio = bind.etPrecio.text.toString()
-                var categoria = bind.spCat.selectedItem.toString()
-                var disponible = bind.chkDisponible.isChecked
+                var fecha = bind.etFecha.text.toString()
+                var aforo = bind.etAforo.text.toString()
                 var id_generado: String? = arguments?.getString("id")
 
                 var url_foto_firebase : String
@@ -134,26 +125,26 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
                         url_foto_firebase = Utilidades.guardarImagenCarta(id_generado!!, urlimg!!)
                     }
 
-                    var nuevacarta = Carta(id_generado, nombre, categoria, precio,disponible, url_foto_firebase)
+                    var nuevoevento = Evento(id_generado, nombre, fecha, precio.toDouble(), 0, aforo.toInt(), url_foto_firebase)
 
-                    Utilidades.subirCarta(nuevacarta)
+                    Utilidades.subirEvento(nuevoevento)
                 }
 
-                Toast.makeText(requireContext(), "Carta editada con exito", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Evento editada con exito", Toast.LENGTH_SHORT).show()
                 limpiar()
             }
         }
 
     }
 
-    private fun validar():Boolean{
+    private fun validar(): Boolean {
         var nombre = true
         var precio = true
-        var categoria = true
-
+        var aforo = true
+        var fecha = true
 
         if (bind.etNombre.text.isNullOrBlank()){
-            bind.tilNombre.error = "La carta debe tener un nombre"
+            bind.tilNombre.error = "El evento debe tener un nombre"
             nombre = false
         }else{
             bind.tilNombre.error = null
@@ -161,34 +152,43 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
         }
 
         if (bind.etPrecio.text.isNullOrBlank() || bind.etPrecio.text.toString().toDouble() < 0){
-            bind.tilPrecio.error = "La carta debe tener un precio"
+            bind.tilPrecio.error = "El evento debe tener un precio"
             precio = false
         }else{
             bind.tilPrecio.error = null
             precio = true
         }
 
-        if (bind.spCat.selectedItemPosition == 0){
-            Toast.makeText(requireContext(), "Selecciona una categoria", Toast.LENGTH_SHORT).show()
-            categoria = false
+        if (bind.etAforo.text.isNullOrBlank() || bind.etAforo.text.toString().toInt() < 0) {
+            bind.tilAforo.error = "El evento debe tener un aforo"
+            aforo = false
         }else{
-            categoria = true
+            bind.tilAforo.error = null
+            aforo = true
+        }
+
+        if (bind.etFecha.text.isNullOrBlank()) {
+            bind.tilFecha.error = "El evento debe tener una fecha"
+            fecha = false
+        }else{
+            bind.tilFecha.error = null
+            fecha = true
         }
 
 
-        return nombre && precio && categoria
+
+
+        return nombre && precio && aforo && fecha
 
     }
 
-
-    fun limpiar(){
+    private fun limpiar(){
         bind.etNombre.text = null
         bind.etPrecio.text = null
-        bind.spCat.setSelection(0)
-        bind.chkDisponible.isChecked = false
-        bind.imgEditar.setImageResource(R.drawable.ic_menu_camera)
+        bind.etFecha.text = null
+        bind.etAforo.text = null
+        bind.img.setImageResource(R.drawable.ic_menu_camera)
     }
-
 
     companion object {
         /**
@@ -197,12 +197,12 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment EditarCartaFragment.
+         * @return A new instance of fragment EditarEventoFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            EditarCartaFragment().apply {
+            EditarEventoFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
