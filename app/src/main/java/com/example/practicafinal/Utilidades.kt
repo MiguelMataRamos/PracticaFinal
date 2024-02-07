@@ -2,11 +2,16 @@ package com.example.practicafinal
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -73,6 +78,30 @@ class Utilidades(context: Context) {
                 .error(R.drawable.fotodef)
             return options
         }
+
+        fun showPopupMenuOptions(view: View, context:Context) {
+            val popupMenu = PopupMenu(context, view)
+            popupMenu.menuInflater.inflate(R.menu.menu_opciones, popupMenu.menu)
+
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.cerrarsesion -> {
+                        // Aquí va tu código para la opción 1
+                        //cierra la sesion
+                        val auth = FirebaseAuth.getInstance()
+                        auth.signOut()
+                        //redirige a la pantalla de login
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.show()
+        }
+
+
 
 
     }

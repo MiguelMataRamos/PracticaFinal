@@ -2,6 +2,7 @@ package com.example.practicafinal
 
 import android.app.AlertDialog
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -68,19 +70,53 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
 
 
         holder.itemView.setOnLongClickListener {
-            AlertDialog.Builder(contexto)
-                .setTitle("Borrar")
-                .setMessage("¿Estás seguro de que quieres borrar " + item_actual.nombre!!.uppercase() + "?")
-                .setPositiveButton("Sí") { _, _ ->
-                    val carta = lista_filtrada[position]
-                    FirebaseDatabase.getInstance().getReference("Tienda/Cartas/${carta.id}")
-                        .removeValue()
-                    lista_filtrada.removeAt(position)
-                    notifyItemRemoved(position)
-                    Toast.makeText(contexto, "Carta borrada con éxito", Toast.LENGTH_SHORT).show()
+            val popupMenu = PopupMenu(contexto, it)
+            popupMenu.menuInflater.inflate(R.menu.menu_edit_del, popupMenu.menu)
+
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.edit -> {
+                        // Aquí va tu código para la opción 1
+                        val bundle = Bundle()
+                        bundle.putString("nombre", item_actual.nombre)
+                        bundle.putString("precio", item_actual.precio)
+                        bundle.putString("categoria", item_actual.categoria)
+                        bundle.putString("imagen", item_actual.imagen)
+                        bundle.putBoolean("disponible", item_actual.disponible)
+
+                        // Crear una instancia del fragment, establecer los argumentos y abrir el fragment
+                        val fragment = EditarCartaFragment()
+                        fragment.arguments = bundle
+                        val transaction = (contexto as Administrador).supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.fragment_container, fragment)
+                        transaction.addToBackStack(null)
+                        transaction.commit()
+                        true
+                    }
+                    R.id.del -> {
+                        //Se avisa al usuario si quirere borrar ese objeto
+                        val builder = AlertDialog.Builder(contexto)
+                        builder.setTitle("Eliminar")
+                        builder.setMessage("¿Estas seguro de que quieres eliminar este objeto?")
+                        builder.setPositiveButton("Si") { dialog, which ->
+                            //se elimina el objeto de la base de datos
+                            val db_ref = FirebaseDatabase.getInstance().reference
+                            db_ref.child("Tienda").child("Cartas").child(item_actual.id!!).removeValue()
+                            //se elimina el objeto de la lista
+                            lista_filtrada.removeAt(position)
+                            notifyDataSetChanged()
+                            Toast.makeText(contexto, "Carta eliminada", Toast.LENGTH_SHORT).show()
+                        }
+                        builder.setNegativeButton("No") { dialog, which ->
+                            //se cancela la eliminacion
+                        }
+                        builder.show()
+                        true
+                    }
+                    else -> false
                 }
-                .setNegativeButton("No", null)
-                .show()
+            }
+            popupMenu.show()
             true
         }
 

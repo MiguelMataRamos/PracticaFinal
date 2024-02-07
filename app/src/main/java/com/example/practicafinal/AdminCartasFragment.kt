@@ -1,6 +1,7 @@
 package com.example.practicafinal
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,11 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupMenu
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicafinal.databinding.ActivityAdministradorBinding
 import com.example.practicafinal.databinding.FragmentAdminCartasBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -133,7 +136,12 @@ class AdminCartasFragment : Fragment() {
 
         })
 
+        bind.opciones.setOnClickListener {
+            Utilidades.showPopupMenuOptions(it, requireContext())
+        }
+
     }
+
 
     fun mostrarBusqueda() {
         bind.close.visibility = View.VISIBLE

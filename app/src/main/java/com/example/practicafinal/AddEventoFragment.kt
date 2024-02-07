@@ -111,6 +111,7 @@ class AddEventoFragment : Fragment(), CoroutineScope {
         }
     }
 
+
     //Coge la foto seleccionada y la pone en el ImageView
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
