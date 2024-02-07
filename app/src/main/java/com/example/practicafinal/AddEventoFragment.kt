@@ -1,6 +1,7 @@
 package com.example.practicafinal
 
 import android.R
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
@@ -36,7 +37,7 @@ class AddEventoFragment : Fragment(), CoroutineScope {
 
     private lateinit var db_ref: DatabaseReference
     private lateinit var bind: FragmentAddEventoBinding
-    private val urlimg: Uri? = null
+    private var urlimg: Uri? = null
 
 
     // TODO: Rename and change types of parameters
@@ -85,7 +86,7 @@ class AddEventoFragment : Fragment(), CoroutineScope {
                     Utilidades.subirEvento(nuevoevento)
                 }
 
-                Toast.makeText(requireContext(), "Carta guardada con exito", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Evento creado con exito", Toast.LENGTH_SHORT).show()
                 limpiar()
             }
         }
@@ -107,6 +108,19 @@ class AddEventoFragment : Fragment(), CoroutineScope {
             }, year, month, day)
 
             datePickerDialog.show()
+        }
+    }
+
+    //Coge la foto seleccionada y la pone en el ImageView
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
+            val selectedImage = data.data
+            // Aquí puedes usar la URI de la imagen seleccionada
+            urlimg = selectedImage
+            // Por ejemplo, puedes establecerla en un ImageView
+            bind.img.setImageURI(selectedImage)
         }
     }
 
@@ -168,6 +182,8 @@ class AddEventoFragment : Fragment(), CoroutineScope {
         bind.etAforo.text = null
         bind.img.setImageResource(R.drawable.ic_menu_camera)
     }
+
+
 
     companion object {
         /**

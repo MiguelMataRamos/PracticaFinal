@@ -1,11 +1,16 @@
 package com.example.practicafinal
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.firebase.database.FirebaseDatabase
 
 class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
     RecyclerView.Adapter<EventoAdaptador.EventoViewHolder>() {
@@ -20,6 +25,7 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
         val aforo: TextView = itemView.findViewById(R.id.aforo_actual)
         val aforomax: TextView = itemView.findViewById(R.id.aforo_max)
         val disponible = itemView.findViewById<View>(R.id.disponible)
+        val img = itemView.findViewById<ImageView>(R.id.img)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): EventoViewHolder {
@@ -36,6 +42,7 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
         holder.precio.text = item_actual.precio.toString()
         holder.aforo.text = item_actual.aforoactual.toString()
         holder.aforomax.text = item_actual.aforomax.toString()
+
         if (item_actual.aforoactual <= item_actual.aforomax.toString().toDouble()/2!!) {
             holder.disponible.background = contexto.getDrawable(R.color.green)
         } else if (item_actual.aforoactual.toString().toDouble() == item_actual.aforomax.toString().toDouble()) {
@@ -43,6 +50,36 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
         }else{
             holder.disponible.background = contexto.getDrawable(R.color.orange)
         }
+
+        val URL: String? = when (item_actual.imagen) {
+            "" -> null
+            else -> item_actual.imagen
+        }
+
+        Glide.with(contexto)
+            .load(URL)
+            .apply(Utilidades.opcionesGlide(contexto))
+            .transition(Utilidades.transicion)
+            .into(holder.img)
+
+
+        holder.itemView.setOnLongClickListener {
+            AlertDialog.Builder(contexto)
+                .setTitle("Borrar")
+                .setMessage("¿Estás seguro de que quieres borrar " + item_actual.nombre!!.uppercase() + "?")
+                .setPositiveButton("Sí") { _, _ ->
+                    val evento = lista_filtrada[position]
+                    FirebaseDatabase.getInstance().getReference("Tienda/Eventos/${evento.id}")
+                        .removeValue()
+                    lista_filtrada.removeAt(position)
+                    notifyItemRemoved(position)
+                    Toast.makeText(contexto, "Carta borrada con éxito", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("No", null)
+                .show()
+            true
+        }
+
     }
 
     override fun getItemCount(): Int = lista_filtrada.size
