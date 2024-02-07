@@ -83,6 +83,7 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
                         bundle.putString("categoria", item_actual.categoria)
                         bundle.putString("imagen", item_actual.imagen)
                         bundle.putBoolean("disponible", item_actual.disponible)
+                        bundle.putString("id", item_actual.id)
 
                         // Crear una instancia del fragment, establecer los argumentos y abrir el fragment
                         val fragment = EditarCartaFragment()
