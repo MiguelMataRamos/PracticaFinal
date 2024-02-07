@@ -49,8 +49,8 @@ class AdminCartasFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        bind = FragmentAdminCartasBinding.inflate(layoutInflater)
 
+        bind = FragmentAdminCartasBinding.inflate(layoutInflater)
         db_ref = FirebaseDatabase.getInstance().reference
         lista = mutableListOf()
 
