@@ -1,11 +1,15 @@
 package com.example.practicafinal
 
+import android.R
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.core.net.toUri
+import com.bumptech.glide.Glide
 import com.example.practicafinal.databinding.FragmentEditarCartaBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -20,6 +24,8 @@ private const val ARG_PARAM2 = "param2"
  */
 class EditarCartaFragment : Fragment() {
     lateinit var bind: FragmentEditarCartaBinding
+
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -46,11 +52,31 @@ class EditarCartaFragment : Fragment() {
         val imagen = arguments?.getString("imagen")
         val disponible = arguments?.getBoolean("disponible")
 
+        Log.i("Categoria", categoria.toString())
+
+        val categorias = arrayOf("Selecciona categoria", "Blanco", "Negro", "Azul", "Verde")
+        val adapter =
+            ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, categorias)
+        bind.spCat.adapter = adapter
+
+        // Encontrar el índice de la categoría en el array de categorías
+        val index = categorias.indexOf(categoria)
+
+        // Establecer la categoría como la opción seleccionada en el Spinner
+        bind.spCat.setSelection(index)
+
+
         // Usar los datos obtenidos...
         bind.etNombre.setText(nombre)
         bind.etPrecio.setText(precio)
         bind.chkDisponible.isChecked = disponible!!
-        bind.img.setImageURI(imagen!!.toUri())
+        bind.imgEditar.setImageURI(imagen!!.toUri())
+
+        Glide.with(requireContext())
+            .load(imagen)
+            .apply(Utilidades.opcionesGlide(requireContext()))
+            .transition(Utilidades.transicion)
+            .into(bind.imgEditar)
 
 
         return bind.root
