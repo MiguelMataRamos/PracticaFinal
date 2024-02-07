@@ -39,6 +39,7 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
     lateinit var bind: FragmentEditarCartaBinding
     private lateinit var db_ref: DatabaseReference
     private var urlimg: Uri? = null
+    private lateinit var listacartas: MutableList<Carta>
 
 
     // TODO: Rename and change types of parameters
@@ -51,6 +52,8 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        db_ref = FirebaseDatabase.getInstance().reference
     }
 
     override fun onCreateView(
@@ -147,10 +150,13 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
     }
 
     private fun validar():Boolean{
+        listacartas = Utilidades.obtenerListaCartas(db_ref)
         var nombre = true
         var precio = true
         var categoria = true
+        var bexiste = true
 
+        Log.d("lista", listacartas.toString())
 
         if (bind.etNombre.text.isNullOrBlank()){
             bind.tilNombre.error = "La carta debe tener un nombre"
@@ -175,8 +181,16 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
             categoria = true
         }
 
+        if(Utilidades.existeCarta(listacartas, bind.etNombre.text.toString().trim())) {
+            Toast.makeText(requireContext(), "Esa carta ya existe", Toast.LENGTH_SHORT)
+                .show()
+            bexiste = false
+        }else{
+            bexiste = true
+        }
 
-        return nombre && precio && categoria
+
+        return nombre && precio && categoria && bexiste
 
     }
 

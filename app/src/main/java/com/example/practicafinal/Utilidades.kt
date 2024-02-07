@@ -15,8 +15,11 @@ import android.widget.Toast
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 
@@ -24,6 +27,59 @@ class Utilidades(context: Context) {
     companion object {
         var db_ref = FirebaseDatabase.getInstance().reference
         var st = FirebaseStorage.getInstance().reference
+
+
+        fun obtenerListaCartas(db_reff: DatabaseReference): MutableList<Carta> {
+            var lista = mutableListOf<Carta>()
+
+            db_reff.child("Tienda").child("Cartas")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        snapshot.children.forEach { hijo: DataSnapshot ->
+                            val pojo_carta = hijo.getValue(Carta::class.java)
+                            lista.add(pojo_carta!!)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        println(error.message)
+                    }
+                })
+
+            return lista
+        }
+        fun obtenerListaEventos(): MutableList<Evento> {
+            var lista = mutableListOf<Evento>()
+
+            db_ref.child("Tienda").child("Eventos")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        snapshot.children.forEach { hijo: DataSnapshot ->
+                            val pojo_evento = hijo.getValue(Evento::class.java)
+                            lista.add(pojo_evento!!)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        println(error.message)
+                    }
+                })
+
+            return lista
+        }
+
+        fun existeCarta(cartas: List<Carta>, nombre: String): Boolean {
+            return cartas.any {
+                it.nombre!!.lowercase() == nombre.lowercase()
+            }
+        }
+        fun existeEvento(eventos: List<Evento>, nombre: String): Boolean {
+            return eventos.any {
+                it.nombre!!.lowercase() == nombre.lowercase()
+            }
+        }
+
+
         fun subirUsuario(usuario: Usuario) {
             db_ref.child("Tienda").child("Usuarios").child(usuario.id).setValue(usuario)
         }
