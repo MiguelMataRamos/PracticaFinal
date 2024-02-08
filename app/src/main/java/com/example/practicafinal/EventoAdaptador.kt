@@ -52,7 +52,7 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
         if (Utilidades.cogerAdmin(contexto) == "0") {
             holder.unirse.visibility = View.VISIBLE
         }else{
-            holder.unirse.visibility = View.INVISIBLE
+            holder.unirse.visibility = View.GONE
         }
 
         if (item_actual.aforoactual <= item_actual.aforomax.toString().toDouble()/2!!) {
