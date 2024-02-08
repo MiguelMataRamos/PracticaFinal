@@ -13,7 +13,7 @@ class Administrador : AppCompatActivity() {
         when (item.itemId) {
             R.id.cartas -> {
                 supportFragmentManager.commit {
-                    replace<AdminCartasFragment>(R.id.fragment_container)
+                    replace<CartasFragment>(R.id.fragment_container)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }
@@ -22,7 +22,7 @@ class Administrador : AppCompatActivity() {
 
             R.id.eventos -> {
                 supportFragmentManager.commit {
-                    replace<AdminEventosFragment>(R.id.fragment_container)
+                    replace<EventosFragment>(R.id.fragment_container)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }
@@ -51,7 +51,7 @@ class Administrador : AppCompatActivity() {
         navegation.setOnNavigationItemSelectedListener(mOnNavMenu)
 
         supportFragmentManager.commit {
-            replace<AdminCartasFragment>(R.id.fragment_container)
+            replace<CartasFragment>(R.id.fragment_container)
             setReorderingAllowed(true)
             addToBackStack("replacement")
         }

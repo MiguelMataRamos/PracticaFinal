@@ -1,8 +1,6 @@
 package com.example.practicafinal
 
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Editable
@@ -12,11 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.practicafinal.databinding.FragmentAdminEventosBinding
-import com.google.firebase.auth.FirebaseAuth
+import com.example.practicafinal.databinding.FragmentEventosBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -30,11 +26,11 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [AdminEventosFragment.newInstance] factory method to
+ * Use the [EventosFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AdminEventosFragment : Fragment() {
-    private lateinit var bind: FragmentAdminEventosBinding
+class EventosFragment : Fragment() {
+    private lateinit var bind: FragmentEventosBinding
     private lateinit var lista: MutableList<Evento>
     private lateinit var db_ref: DatabaseReference
     private lateinit var recycler: RecyclerView
@@ -51,7 +47,7 @@ class AdminEventosFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-        bind = FragmentAdminEventosBinding.inflate(layoutInflater)
+        bind = FragmentEventosBinding.inflate(layoutInflater)
         db_ref = FirebaseDatabase.getInstance().reference
         lista = mutableListOf()
 
@@ -167,6 +163,12 @@ class AdminEventosFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        var admin = Utilidades.cogerAdmin(requireContext())
+        if (admin == "0") {
+            bind.btnAgregarEvento.visibility = View.GONE
+        }else{
+            bind.btnAgregarEvento.visibility = View.VISIBLE
+        }
 
         // Inflate the layout for this fragment
         return bind.root
@@ -184,7 +186,7 @@ class AdminEventosFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            AdminEventosFragment().apply {
+            EventosFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

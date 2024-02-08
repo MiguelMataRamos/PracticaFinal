@@ -3,17 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".EventosFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AdminCartasFragment"
-    android:background="@color/white"
-    >
-
-
+    android:background="@color/white">
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -43,10 +40,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-
                 />
-
-
 
             <ImageView
                 android:layout_width="40dp"
@@ -56,7 +50,6 @@
                 app:layout_constraintEnd_toStartOf="@id/opciones"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-
                 />
             <ImageView
                 android:layout_width="40dp"
@@ -66,11 +59,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:visibility="invisible"
                 />
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/buscar_et"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -85,31 +78,29 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:visibility="invisible"/>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/sc_cartas"
+            android:id="@+id/sc_eventos"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scrollbars="vertical"
             app:layout_constraintTop_toBottomOf="@id/header"
-            app:layout_constraintBottom_toTopOf="@id/btn_agregar_carta"
-            tools:listitem="@layout/item_carta" />
+            app:layout_constraintBottom_toTopOf="@id/btn_agregar_evento"
+            tools:listitem="@layout/item_evento" />
 
         <Button
-            android:id="@+id/btn_agregar_carta"
+            android:id="@+id/btn_agregar_evento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black2"
-            android:text="Agregar carta"
+            android:text="Agregar evento"
             android:translationZ="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

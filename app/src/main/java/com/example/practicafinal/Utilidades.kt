@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.preference.PreferenceManager
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
@@ -29,6 +30,11 @@ class Utilidades(context: Context) {
         var st = FirebaseStorage.getInstance().reference
 
 
+        fun cogerAdmin(context: Context): String{
+            var sp = PreferenceManager.getDefaultSharedPreferences(context)
+            var admin = sp.getString("admin", "0")
+            return admin!!
+        }
         fun obtenerListaCartas(db_reff: DatabaseReference): MutableList<Carta> {
             var lista = mutableListOf<Carta>()
 

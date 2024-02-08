@@ -1,24 +1,18 @@
 package com.example.practicafinal
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.PopupMenu
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.practicafinal.databinding.ActivityAdministradorBinding
-import com.example.practicafinal.databinding.FragmentAdminCartasBinding
-import com.google.firebase.auth.FirebaseAuth
+import com.example.practicafinal.databinding.FragmentCartasBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -32,11 +26,11 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [AdminCartasFragment.newInstance] factory method to
+ * Use the [CartasFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AdminCartasFragment : Fragment() {
-    private lateinit var bind: FragmentAdminCartasBinding
+class CartasFragment : Fragment() {
+    private lateinit var bind: FragmentCartasBinding
     private lateinit var lista: MutableList<Carta>
     private lateinit var db_ref: DatabaseReference
     private lateinit var recycler: RecyclerView
@@ -54,7 +48,7 @@ class AdminCartasFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-        bind = FragmentAdminCartasBinding.inflate(layoutInflater)
+        bind = FragmentCartasBinding.inflate(layoutInflater)
         db_ref = FirebaseDatabase.getInstance().reference
         lista = mutableListOf()
 
@@ -65,8 +59,8 @@ class AdminCartasFragment : Fragment() {
                 snapshot.children.forEach { hijo: DataSnapshot? ->
                     val pojocarta = hijo!!.getValue(Carta::class.java)
 
-                    var sp = PreferenceManager.getDefaultSharedPreferences(context)
-                    var admin = sp.getString("admin", "0")
+
+                    var admin = Utilidades.cogerAdmin(requireContext())
                     if (admin == "0") {
                         if (pojocarta?.disponible == true) {
                             lista.add(pojocarta!!)
@@ -101,6 +95,12 @@ class AdminCartasFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        var admin = Utilidades.cogerAdmin(requireContext())
+        if (admin == "0") {
+            bind.btnAgregarCarta.visibility = View.GONE
+        }else{
+            bind.btnAgregarCarta.visibility = View.VISIBLE
+        }
 
 
         // Inflate the layout for this fragment with binding
@@ -187,7 +187,7 @@ class AdminCartasFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            AdminCartasFragment().apply {
+            CartasFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

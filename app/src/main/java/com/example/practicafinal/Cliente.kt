@@ -13,7 +13,7 @@ class Cliente : AppCompatActivity() {
         when (item.itemId) {
             R.id.cartas -> {
                 supportFragmentManager.commit {
-                    replace<AdminCartasFragment>(R.id.fragment_container)
+                    replace<CartasFragment>(R.id.fragment_container)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }
@@ -22,7 +22,7 @@ class Cliente : AppCompatActivity() {
 
             R.id.eventos -> {
                 supportFragmentManager.commit {
-                    replace<AdminEventosFragment>(R.id.fragment_container)
+                    replace<EventosFragment>(R.id.fragment_container)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }
@@ -30,7 +30,7 @@ class Cliente : AppCompatActivity() {
             }
             R.id.usuario -> {
                 supportFragmentManager.commit {
-                    replace<AdminPedidosFragment>(R.id.fragment_container)
+                    replace<UserFragment>(R.id.fragment_container)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }
@@ -51,7 +51,7 @@ class Cliente : AppCompatActivity() {
         navegation.setOnNavigationItemSelectedListener(mOnNavMenu)
 
         supportFragmentManager.commit {
-            replace<AdminCartasFragment>(R.id.fragment_container)
+            replace<CartasFragment>(R.id.fragment_container)
             setReorderingAllowed(true)
             addToBackStack("replacement")
         }

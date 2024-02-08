@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
@@ -30,7 +31,7 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
         val categoria: TextView = itemView.findViewById(R.id.categoria)
         val imagen: ImageView = itemView.findViewById(R.id.img)
         val disponible: View = itemView.findViewById(R.id.disponible)
-
+        val comprar:Button = itemView.findViewById(R.id.comprar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartaViewHolder {
@@ -47,6 +48,14 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
         holder.nombre.text = item_actual.nombre
         holder.precio.text = item_actual.precio
         holder.categoria.text = item_actual.categoria
+
+        if (Utilidades.cogerAdmin(contexto) == "0") {
+            holder.disponible.visibility = View.INVISIBLE
+            holder.comprar.visibility = View.VISIBLE
+        }else{
+            holder.disponible.visibility = View.VISIBLE
+            holder.comprar.visibility = View.INVISIBLE
+        }
 
         if (item_actual.disponible) {
             holder.disponible.background = contexto.getDrawable(R.drawable.fondo_disponible)
@@ -67,8 +76,8 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
 
 
         holder.itemView.setOnLongClickListener {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contexto)
-            val admin = sharedPreferences.getString("admin", "0")
+
+            val admin = Utilidades.cogerAdmin(contexto)
 
             if (admin == "1") {
                 val popupMenu = PopupMenu(contexto, it)
@@ -128,6 +137,10 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
             }
             true
 
+
+        }
+
+        holder.comprar.setOnClickListener {
 
         }
 

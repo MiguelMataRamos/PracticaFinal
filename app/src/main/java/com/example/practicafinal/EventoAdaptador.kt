@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
@@ -30,6 +31,7 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
         val aforomax: TextView = itemView.findViewById(R.id.aforo_max)
         val disponible = itemView.findViewById<View>(R.id.disponible)
         val img = itemView.findViewById<ImageView>(R.id.img)
+        val unirse = itemView.findViewById<Button>(R.id.unirse)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): EventoViewHolder {
@@ -46,6 +48,12 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
         holder.precio.text = item_actual.precio.toString()
         holder.aforo.text = item_actual.aforoactual.toString()
         holder.aforomax.text = item_actual.aforomax.toString()
+
+        if (Utilidades.cogerAdmin(contexto) == "0") {
+            holder.unirse.visibility = View.VISIBLE
+        }else{
+            holder.unirse.visibility = View.INVISIBLE
+        }
 
         if (item_actual.aforoactual <= item_actual.aforomax.toString().toDouble()/2!!) {
             holder.disponible.background = contexto.getDrawable(R.color.green)
