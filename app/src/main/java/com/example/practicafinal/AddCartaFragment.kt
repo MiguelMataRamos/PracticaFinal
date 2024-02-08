@@ -38,6 +38,7 @@ class AddCartaFragment: Fragment(), CoroutineScope {
     private lateinit var db_ref: DatabaseReference
     private lateinit var bind: FragmentAddCartaBinding
     private var urlimg: Uri? = null
+    private lateinit var listacartas: MutableList<Carta>
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -53,6 +54,8 @@ class AddCartaFragment: Fragment(), CoroutineScope {
 
         db_ref = FirebaseDatabase.getInstance().reference
 
+        listacartas = Utilidades.obtenerListaCartas(db_ref)
+
     }
 
     override fun onCreateView(
@@ -64,8 +67,6 @@ class AddCartaFragment: Fragment(), CoroutineScope {
         val adapter =
             ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, categorias)
         bind.spCat.adapter = adapter
-
-
 
 
         // Inflate the layout for this fragment
@@ -119,6 +120,7 @@ class AddCartaFragment: Fragment(), CoroutineScope {
         var precio = true
         var categoria = true
         var foto = true
+        var extiste = true
 
         if (bind.etNombre.text.isNullOrBlank()){
             bind.tilNombre.error = "La carta debe tener un nombre"
@@ -150,8 +152,17 @@ class AddCartaFragment: Fragment(), CoroutineScope {
             foto = true
         }
 
+        if (Utilidades.existeCarta(listacartas, bind.etNombre.text.toString().trim())) {
+            Toast.makeText(requireContext(), "Esa carta ya existe", Toast.LENGTH_SHORT)
+                .show()
+            extiste = false
+        } else {
+            extiste = true
 
-        return nombre && precio && categoria && foto
+        }
+
+
+        return nombre && precio && categoria &&  foto && extiste
 
     }
 

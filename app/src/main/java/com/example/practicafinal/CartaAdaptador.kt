@@ -3,6 +3,7 @@ package com.example.practicafinal
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -46,10 +47,6 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
         holder.nombre.text = item_actual.nombre
         holder.precio.text = item_actual.precio
         holder.categoria.text = item_actual.categoria
-        if (item_actual.categoria == "Negro"){
-
-        }
-
 
         if (item_actual.disponible) {
             holder.disponible.background = contexto.getDrawable(R.drawable.fondo_disponible)
@@ -70,55 +67,68 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
 
 
         holder.itemView.setOnLongClickListener {
-            val popupMenu = PopupMenu(contexto, it)
-            popupMenu.menuInflater.inflate(R.menu.menu_edit_del, popupMenu.menu)
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contexto)
+            val admin = sharedPreferences.getString("admin", "0")
 
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.edit -> {
-                        // Aquí va tu código para la opción 1
-                        val bundle = Bundle()
-                        bundle.putString("nombre", item_actual.nombre)
-                        bundle.putString("precio", item_actual.precio)
-                        bundle.putString("categoria", item_actual.categoria)
-                        bundle.putString("imagen", item_actual.imagen)
-                        bundle.putBoolean("disponible", item_actual.disponible)
-                        bundle.putString("id", item_actual.id)
+            if (admin == "1") {
+                val popupMenu = PopupMenu(contexto, it)
+                popupMenu.menuInflater.inflate(R.menu.menu_edit_del, popupMenu.menu)
 
-                        // Crear una instancia del fragment, establecer los argumentos y abrir el fragment
-                        val fragment = EditarCartaFragment()
-                        fragment.arguments = bundle
-                        val transaction = (contexto as Administrador).supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.fragment_container, fragment)
-                        transaction.addToBackStack(null)
-                        transaction.commit()
-                        true
-                    }
-                    R.id.del -> {
-                        //Se avisa al usuario si quirere borrar ese objeto
-                        val builder = AlertDialog.Builder(contexto)
-                        builder.setTitle("Eliminar")
-                        builder.setMessage("¿Estas seguro de que quieres eliminar este objeto?")
-                        builder.setPositiveButton("Si") { dialog, which ->
-                            //se elimina el objeto de la base de datos
-                            val db_ref = FirebaseDatabase.getInstance().reference
-                            db_ref.child("Tienda").child("Cartas").child(item_actual.id!!).removeValue()
-                            //se elimina el objeto de la lista
-                            lista_filtrada.removeAt(position)
-                            notifyDataSetChanged()
-                            Toast.makeText(contexto, "Carta eliminada", Toast.LENGTH_SHORT).show()
+                popupMenu.setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.edit -> {
+                            // Aquí va tu código para la opción 1
+                            val bundle = Bundle()
+                            bundle.putString("nombre", item_actual.nombre)
+                            bundle.putString("precio", item_actual.precio)
+                            bundle.putString("categoria", item_actual.categoria)
+                            bundle.putString("imagen", item_actual.imagen)
+                            bundle.putBoolean("disponible", item_actual.disponible)
+                            bundle.putString("id", item_actual.id)
+
+                            // Crear una instancia del fragment, establecer los argumentos y abrir el fragment
+                            val fragment = EditarCartaFragment()
+                            fragment.arguments = bundle
+                            val transaction =
+                                (contexto as Administrador).supportFragmentManager.beginTransaction()
+                            transaction.replace(R.id.fragment_container, fragment)
+                            transaction.addToBackStack(null)
+                            transaction.commit()
+                            true
                         }
-                        builder.setNegativeButton("No") { dialog, which ->
-                            //se cancela la eliminacion
+
+                        R.id.del -> {
+                            //Se avisa al usuario si quirere borrar ese objeto
+                            val builder = AlertDialog.Builder(contexto)
+                            builder.setTitle("Eliminar")
+                            builder.setMessage("¿Estas seguro de que quieres eliminar este objeto?")
+                            builder.setPositiveButton("Si") { dialog, which ->
+                                //se elimina el objeto de la base de datos
+                                val db_ref = FirebaseDatabase.getInstance().reference
+                                db_ref.child("Tienda").child("Cartas").child(item_actual.id!!)
+                                    .removeValue()
+                                //se elimina el objeto de la lista
+                                lista_filtrada.removeAt(position)
+                                notifyDataSetChanged()
+                                Toast.makeText(contexto, "Carta eliminada", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                            builder.setNegativeButton("No") { dialog, which ->
+                                //se cancela la eliminacion
+                            }
+                            builder.show()
+                            true
                         }
-                        builder.show()
-                        true
+
+                        else -> false
                     }
-                    else -> false
                 }
+                popupMenu.show()
+
             }
-            popupMenu.show()
             true
+
+
         }
 
 
@@ -129,13 +139,29 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
         return object : Filter() {
             override fun performFiltering(p0: CharSequence?): FilterResults {
                 val busqueda = p0.toString().lowercase()
-                if (busqueda.isEmpty()) {
-                    lista_filtrada = lista_cartas
-                } else {
-                    lista_filtrada = (lista_cartas.filter {
-                        it.nombre.toString().lowercase().contains(busqueda)
-                    }) as MutableList<Carta>
+                var sp = PreferenceManager.getDefaultSharedPreferences(contexto)
+                var admin = sp.getString("admin", "0")
+
+                Log.d("ADMIN", admin.toString())
+
+                if (admin == "1"){
+                    if (busqueda.isEmpty()) {
+                        lista_filtrada = lista_cartas
+                    } else {
+                        lista_filtrada = (lista_cartas.filter {
+                            it.nombre.toString().lowercase().contains(busqueda)
+                        }) as MutableList<Carta>
+                    }
+                }else{
+                    if (busqueda.isEmpty()) {
+                        lista_filtrada = (lista_cartas.filter { it.disponible }) as MutableList<Carta>
+                    } else {
+                        lista_filtrada = (lista_cartas.filter {
+                            it.disponible && it.nombre.toString().lowercase().contains(busqueda)
+                        }) as MutableList<Carta>
+                    }
                 }
+
 
                 val filterResults = FilterResults()
                 filterResults.values = lista_filtrada

@@ -38,6 +38,7 @@ class AddEventoFragment : Fragment(), CoroutineScope {
     private lateinit var db_ref: DatabaseReference
     private lateinit var bind: FragmentAddEventoBinding
     private var urlimg: Uri? = null
+    private lateinit var listaeventos: MutableList<Evento>
 
 
     // TODO: Rename and change types of parameters
@@ -53,6 +54,8 @@ class AddEventoFragment : Fragment(), CoroutineScope {
 
         bind = FragmentAddEventoBinding.inflate(layoutInflater)
         db_ref = FirebaseDatabase.getInstance().reference
+
+        listaeventos = Utilidades.obtenerListaEventos()
 
     }
 
@@ -131,6 +134,7 @@ class AddEventoFragment : Fragment(), CoroutineScope {
         var foto = true
         var aforo = true
         var fecha = true
+        var existe = true
 
         if (bind.etNombre.text.isNullOrBlank()){
             bind.tilNombre.error = "El evento debe tener un nombre"
@@ -171,8 +175,16 @@ class AddEventoFragment : Fragment(), CoroutineScope {
             foto = true
         }
 
+        if (Utilidades.existeEvento(listaeventos, bind.etNombre.text.toString().trim())) {
+            Toast.makeText(requireContext(), "Ese evento ya existe", Toast.LENGTH_SHORT)
+                .show()
+            existe = false
+        } else {
+            existe = true
+        }
 
-        return nombre && precio && foto && aforo && fecha
+
+        return nombre && precio && foto && aforo && fecha && existe
 
     }
 

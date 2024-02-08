@@ -13,7 +13,10 @@
         android:theme="@style/Theme.PracticaFinal"
         tools:targetApi="31">
         <activity
-            android:name="Administrador"
+            android:name=".Cliente"
+            android:exported="false" />
+        <activity
+            android:name=".Administrador"
             android:exported="false" />
         <activity
             android:name=".PantallaCarga"

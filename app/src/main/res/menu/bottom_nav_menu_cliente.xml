@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/cartas"
+        android:icon="@drawable/card"
+        android:title="Cartas" />
+
+    <item
+        android:id="@+id/eventos"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Eventos" />
+
+    <item
+        android:id="@+id/usuario"
+        android:icon="@drawable/details"
+        android:title="Usuario" />
+</menu>

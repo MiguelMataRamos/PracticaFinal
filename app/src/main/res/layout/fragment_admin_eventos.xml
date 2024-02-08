@@ -40,7 +40,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="20dp"
                 />
 
             <ImageView
@@ -74,7 +73,7 @@
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/lupa"
+                app:layout_constraintEnd_toStartOf="@id/close"
                 app:layout_constraintStart_toEndOf="@id/foto_menu"
                 app:layout_constraintTop_toTopOf="parent"
                 android:visibility="invisible"/>

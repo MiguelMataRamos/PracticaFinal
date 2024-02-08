@@ -32,12 +32,13 @@ private const val ARG_PARAM2 = "param2"
  * Use the [EditarEventoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class EditarEventoFragment : Fragment() , CoroutineScope {
+class EditarEventoFragment : Fragment(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
     lateinit var bind: FragmentEditarEventoBinding
     private lateinit var db_ref: DatabaseReference
     private var urlimg: Uri? = null
+    private lateinit var listaeventos: MutableList<Evento>
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -50,7 +51,9 @@ class EditarEventoFragment : Fragment() , CoroutineScope {
             param2 = it.getString(ARG_PARAM2)
         }
 
+        db_ref = FirebaseDatabase.getInstance().reference
 
+        listaeventos = Utilidades.obtenerListaEventos()
 
 
     }
@@ -110,27 +113,36 @@ class EditarEventoFragment : Fragment() , CoroutineScope {
         }
 
         bind.btnCrear.setOnClickListener {
-            if (validar()){
+            if (validar()) {
                 var nombre = bind.etNombre.text.toString()
                 var precio = bind.etPrecio.text.toString()
                 var fecha = bind.etFecha.text.toString()
                 var aforo = bind.etAforo.text.toString()
                 var id_generado: String? = arguments?.getString("id")
 
-                var url_foto_firebase : String
+                var url_foto_firebase: String
                 launch {
-                    if (urlimg == null){
+                    if (urlimg == null) {
                         url_foto_firebase = arguments?.getString("imagen")!!
-                    }else{
+                    } else {
                         url_foto_firebase = Utilidades.guardarImagenCarta(id_generado!!, urlimg!!)
                     }
 
-                    var nuevoevento = Evento(id_generado, nombre, fecha, precio.toDouble(), 0, aforo.toInt(), url_foto_firebase)
+                    var nuevoevento = Evento(
+                        id_generado,
+                        nombre,
+                        fecha,
+                        precio.toDouble(),
+                        0,
+                        aforo.toInt(),
+                        url_foto_firebase
+                    )
 
                     Utilidades.subirEvento(nuevoevento)
                 }
 
-                Toast.makeText(requireContext(), "Evento editada con exito", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Evento editada con exito", Toast.LENGTH_SHORT)
+                    .show()
                 limpiar()
             }
         }
@@ -142,19 +154,20 @@ class EditarEventoFragment : Fragment() , CoroutineScope {
         var precio = true
         var aforo = true
         var fecha = true
+        var existe = true
 
-        if (bind.etNombre.text.isNullOrBlank()){
+        if (bind.etNombre.text.isNullOrBlank()) {
             bind.tilNombre.error = "El evento debe tener un nombre"
             nombre = false
-        }else{
+        } else {
             bind.tilNombre.error = null
             nombre = true
         }
 
-        if (bind.etPrecio.text.isNullOrBlank() || bind.etPrecio.text.toString().toDouble() < 0){
+        if (bind.etPrecio.text.isNullOrBlank() || bind.etPrecio.text.toString().toDouble() < 0) {
             bind.tilPrecio.error = "El evento debe tener un precio"
             precio = false
-        }else{
+        } else {
             bind.tilPrecio.error = null
             precio = true
         }
@@ -162,7 +175,7 @@ class EditarEventoFragment : Fragment() , CoroutineScope {
         if (bind.etAforo.text.isNullOrBlank() || bind.etAforo.text.toString().toInt() < 0) {
             bind.tilAforo.error = "El evento debe tener un aforo"
             aforo = false
-        }else{
+        } else {
             bind.tilAforo.error = null
             aforo = true
         }
@@ -170,19 +183,26 @@ class EditarEventoFragment : Fragment() , CoroutineScope {
         if (bind.etFecha.text.isNullOrBlank()) {
             bind.tilFecha.error = "El evento debe tener una fecha"
             fecha = false
-        }else{
+        } else {
             bind.tilFecha.error = null
             fecha = true
         }
 
+        if (Utilidades.existeEvento(listaeventos, bind.etNombre.text.toString().trim())) {
+            Toast.makeText(requireContext(), "Ese evento ya existe", Toast.LENGTH_SHORT)
+                .show()
+            existe = false
+        } else {
+            existe = true
+        }
 
 
 
-        return nombre && precio && aforo && fecha
+        return nombre && precio && aforo && fecha && existe
 
     }
 
-    private fun limpiar(){
+    private fun limpiar() {
         bind.etNombre.text = null
         bind.etPrecio.text = null
         bind.etFecha.text = null

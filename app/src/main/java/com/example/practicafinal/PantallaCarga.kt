@@ -19,7 +19,7 @@ class PantallaCarga : AppCompatActivity() {
         //quitar menu superior
         supportActionBar?.hide()
 
-        var sp = PreferenceManager.getDefaultSharedPreferences(this@PantallaCarga)
+        var sp = PreferenceManager.getDefaultSharedPreferences(this)
 
         var db_ref = FirebaseDatabase.getInstance().reference
         var user:Usuario? = null
@@ -40,7 +40,8 @@ class PantallaCarga : AppCompatActivity() {
                     var intent = Intent(this@PantallaCarga, Administrador::class.java)
                     startActivity(intent)
                 }else if (user?.admin == "0"){
-
+                    var intent = Intent(this@PantallaCarga, Cliente::class.java)
+                    startActivity(intent)
                 }
             }
 

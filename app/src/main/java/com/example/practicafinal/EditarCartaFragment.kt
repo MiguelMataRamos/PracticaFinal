@@ -64,6 +64,8 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
 
         db_ref = FirebaseDatabase.getInstance().reference
 
+        listacartas = Utilidades.obtenerListaCartas(db_ref)
+
         // Obtener los datos del Bundle
         val nombre = arguments?.getString("nombre")
         val precio = arguments?.getString("precio")
@@ -150,7 +152,6 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
     }
 
     private fun validar():Boolean{
-        listacartas = Utilidades.obtenerListaCartas(db_ref)
         var nombre = true
         var precio = true
         var categoria = true

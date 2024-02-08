@@ -2,7 +2,9 @@ package com.example.practicafinal
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
@@ -59,7 +61,18 @@ class AdminEventosFragment : Fragment() {
                 lista.clear()
                 snapshot.children.forEach { hijo: DataSnapshot? ->
                     val pojoevento = hijo!!.getValue(Evento::class.java)
-                    lista.add(pojoevento!!)
+
+                    var sp = PreferenceManager.getDefaultSharedPreferences(context)
+                    var admin = sp.getString("admin", "0")
+                    if (admin == "0") {
+                        if (pojoevento?.aforoactual!! < pojoevento?.aforomax!!){
+                            lista.add(pojoevento!!)
+                        }
+                    }else{
+                        lista.add(pojoevento!!)
+                    }
+
+
                 }
                 recycler.adapter?.notifyDataSetChanged()
             }
@@ -133,6 +146,7 @@ class AdminEventosFragment : Fragment() {
         bind.close.visibility = View.VISIBLE
         bind.lupa.visibility = View.INVISIBLE
         bind.buscarEt.visibility = View.VISIBLE
+        bind.opciones.visibility = View.INVISIBLE
         val inputMethodManager =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(bind.buscarEt, InputMethodManager.SHOW_IMPLICIT)
@@ -142,6 +156,7 @@ class AdminEventosFragment : Fragment() {
         bind.close.visibility = View.INVISIBLE
         bind.lupa.visibility = View.VISIBLE
         bind.buscarEt.visibility = View.INVISIBLE
+        bind.opciones.visibility = View.VISIBLE
         val inputMethodManager =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(bind.buscarEt.windowToken, 0)

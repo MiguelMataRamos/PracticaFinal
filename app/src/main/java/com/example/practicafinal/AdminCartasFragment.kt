@@ -3,6 +3,7 @@ package com.example.practicafinal
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -63,7 +64,16 @@ class AdminCartasFragment : Fragment() {
                 lista.clear()
                 snapshot.children.forEach { hijo: DataSnapshot? ->
                     val pojocarta = hijo!!.getValue(Carta::class.java)
-                    lista.add(pojocarta!!)
+
+                    var sp = PreferenceManager.getDefaultSharedPreferences(context)
+                    var admin = sp.getString("admin", "0")
+                    if (admin == "0") {
+                        if (pojocarta?.disponible == true) {
+                            lista.add(pojocarta!!)
+                        }
+                    } else {
+                        lista.add(pojocarta!!)
+                    }
                 }
                 recycler.adapter?.notifyDataSetChanged()
             }
@@ -90,6 +100,7 @@ class AdminCartasFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
 
 
         // Inflate the layout for this fragment with binding
@@ -147,6 +158,7 @@ class AdminCartasFragment : Fragment() {
         bind.close.visibility = View.VISIBLE
         bind.lupa.visibility = View.INVISIBLE
         bind.buscarEt.visibility = View.VISIBLE
+        bind.opciones.visibility = View.INVISIBLE
         val inputMethodManager =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(bind.buscarEt, InputMethodManager.SHOW_IMPLICIT)
@@ -155,6 +167,7 @@ class AdminCartasFragment : Fragment() {
     fun ocultarBusqueda() {
         bind.close.visibility = View.INVISIBLE
         bind.lupa.visibility = View.VISIBLE
+        bind.opciones.visibility = View.VISIBLE
         bind.buscarEt.visibility = View.INVISIBLE
         val inputMethodManager =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
