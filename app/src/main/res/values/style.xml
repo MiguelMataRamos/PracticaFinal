@@ -3,4 +3,6 @@
     <style name="fondo_boton_menu" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/black</item>
     </style>
+
+
 </resources>
