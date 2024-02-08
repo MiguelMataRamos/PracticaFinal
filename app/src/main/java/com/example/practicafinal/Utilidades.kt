@@ -28,6 +28,7 @@ class Utilidades(context: Context) {
     companion object {
         var db_ref = FirebaseDatabase.getInstance().reference
         var st = FirebaseStorage.getInstance().reference
+        var auth = FirebaseAuth.getInstance()
 
 
         fun cogerAdmin(context: Context): String{
@@ -97,7 +98,6 @@ class Utilidades(context: Context) {
         }
 
         suspend fun guardarImagenCarta(idGenerado: String, urlimg: Uri): String {
-
             lateinit var urlimagenfirebase: Uri
 
             urlimagenfirebase = st.child("Tienda").child("ImagenesCartas").child(idGenerado)
@@ -163,6 +163,15 @@ class Utilidades(context: Context) {
             popupMenu.show()
         }
 
+        suspend fun guardarImagenUser(urlimg: Uri): String {
+            lateinit var urlimagenfirebase: Uri
+
+            urlimagenfirebase = st.child("Tienda").child("Usuarios").child(auth.uid.toString())
+                .putFile(urlimg).await().storage.downloadUrl.await()
+
+            return urlimagenfirebase.toString()
+
+        }
 
 
 

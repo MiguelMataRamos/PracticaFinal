@@ -5,5 +5,6 @@ data class Usuario(
     var nombre: String = "",
     var email: String = "",
     var password: String = "",
-    var admin: String = "0"
+    var admin: String = "0",
+    var foto : String = ""
 )
