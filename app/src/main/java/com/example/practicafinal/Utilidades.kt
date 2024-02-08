@@ -90,7 +90,7 @@ class Utilidades(context: Context) {
         fun subirUsuario(usuario: Usuario) {
             db_ref.child("Tienda").child("Usuarios").child(usuario.id).setValue(usuario)
         }
-        suspend fun cogerUsuario(db_ref: DatabaseReference):Usuario?{
+        suspend fun cogerUsuario():Usuario?{
             var user:Usuario? = null
             val datasnapshot = db_ref.child("Tienda").child("Usuarios").child(FirebaseAuth.getInstance().uid!!).get().await()
             user = datasnapshot.getValue(Usuario::class.java)
@@ -162,6 +162,8 @@ class Utilidades(context: Context) {
             }
             popupMenu.show()
         }
+
+
 
         suspend fun guardarImagenUser(urlimg: Uri): String {
             lateinit var urlimagenfirebase: Uri

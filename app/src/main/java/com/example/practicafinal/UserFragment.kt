@@ -54,18 +54,6 @@ class UserFragment : Fragment(), CoroutineScope {
 
         db_ref = FirebaseDatabase.getInstance().reference
 
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        bind = FragmentUserBinding.inflate(inflater, container, false)
-        db_ref = FirebaseDatabase.getInstance().reference
-
-
         launch {
             var foto = db_ref.child("Tienda").child("Usuarios").child(FirebaseAuth.getInstance().uid.toString()).child("foto").get().await().value.toString()
             if (foto != "null") {
@@ -77,7 +65,22 @@ class UserFragment : Fragment(), CoroutineScope {
             }else{
                 bind.foto.setImageResource(R.drawable.fotodef)
             }
+
+            var user = Utilidades.cogerUsuario()
+            bind.nombre.text = user!!.nombre
+
         }
+
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        bind = FragmentUserBinding.inflate(inflater, container, false)
+        db_ref = FirebaseDatabase.getInstance().reference
 
         // Inflate the layout for this fragment
         return bind.root
@@ -88,7 +91,7 @@ class UserFragment : Fragment(), CoroutineScope {
         super.onStart()
 
         bind.foto.setOnClickListener {
-            val popupMenu = PopupMenu(context, view)
+            val popupMenu = PopupMenu(context, bind.foto)
             popupMenu.menuInflater.inflate(R.menu.menu_foto, popupMenu.menu)
 
             popupMenu.setOnMenuItemClickListener { menuItem ->

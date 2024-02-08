@@ -25,7 +25,7 @@ class PantallaCarga : AppCompatActivity() {
         var user:Usuario? = null
 
         CoroutineScope(Dispatchers.IO).launch {
-            user = Utilidades.cogerUsuario(db_ref)
+            user = Utilidades.cogerUsuario()
             sp.edit().apply(){
                 putString("nombre_user", user?.nombre)
                 putString("email_user", user?.email)

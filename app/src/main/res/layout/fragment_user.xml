@@ -45,7 +45,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre"
+                android:text=""
+                android:id="@+id/nombre"
                 android:textSize="30sp"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +58,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CPERFIL USUARIO"
+        android:textSize="30sp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="20dp"
+        />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
