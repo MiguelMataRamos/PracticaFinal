@@ -125,6 +125,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilPrecio"
             android:layout_margin="20dp"
+            app:layout_constraintBottom_toTopOf="@id/btnCrear"
             />
 
         <Button
