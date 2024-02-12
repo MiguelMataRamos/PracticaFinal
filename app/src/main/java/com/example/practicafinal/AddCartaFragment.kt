@@ -100,6 +100,10 @@ class AddCartaFragment: Fragment(), CoroutineScope {
             }
         }
 
+        bind.opciones.setOnClickListener {
+            Utilidades.showPopupMenuOptions(it, requireContext())
+        }
+
 
 
     }

@@ -112,6 +112,10 @@ class AddEventoFragment : Fragment(), CoroutineScope {
 
             datePickerDialog.show()
         }
+
+        bind.opciones.setOnClickListener {
+            Utilidades.showPopupMenuOptions(it, requireContext())
+        }
     }
 
 
