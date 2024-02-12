@@ -64,6 +64,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="€"
+            android:layout_marginEnd="10dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
