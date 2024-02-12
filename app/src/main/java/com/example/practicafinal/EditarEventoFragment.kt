@@ -133,8 +133,8 @@ class EditarEventoFragment : Fragment(), CoroutineScope {
                         nombre,
                         fecha,
                         precio.toDouble(),
-                        0,
-                        aforo.toInt(),
+                        "0",
+                        aforo,
                         url_foto_firebase
                     )
 

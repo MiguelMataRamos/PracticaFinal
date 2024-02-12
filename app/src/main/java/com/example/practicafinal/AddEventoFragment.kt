@@ -84,7 +84,7 @@ class AddEventoFragment : Fragment(), CoroutineScope {
                 val aforomax = bind.etAforo.text.toString()
                 launch {
                     val urlimgfirebase = Utilidades.guardarImagenEvento(id_generado!!, urlimg!!)
-                    val nuevoevento = Evento(id_generado, nombre, fecha, precio.toDouble(), 0, aforomax.toInt(), urlimgfirebase)
+                    val nuevoevento = Evento(id_generado, nombre, fecha, precio.toDouble(), "0", aforomax, urlimgfirebase)
 
                     Utilidades.subirEvento(nuevoevento)
                 }

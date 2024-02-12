@@ -176,11 +176,14 @@ class Utilidades(context: Context) {
             popupMenu.show()
         }
 
+        fun apuntarseEvento(itemActual: Evento, contexto: Context) {
+            var aforo = itemActual.aforoactual!!.toInt()
 
+            aforo ++
+            db_ref.child("Tienda").child("Eventos").child(itemActual.id!!).child("aforoactual").setValue(aforo.toString())
 
-
-
-
+            Toast.makeText(contexto, "Te has apuntado al evento", Toast.LENGTH_SHORT).show()
+        }
 
 
     }
