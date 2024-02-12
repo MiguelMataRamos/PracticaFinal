@@ -34,7 +34,7 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
         val unirse = itemView.findViewById<Button>(R.id.unirse)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): EventoViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventoViewHolder {
         val vista_item =
             LayoutInflater.from(parent.context).inflate(R.layout.item_evento, parent, false)
         contexto = parent.context
@@ -51,15 +51,17 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
 
         if (Utilidades.cogerAdmin(contexto) == "0") {
             holder.unirse.visibility = View.VISIBLE
-        }else{
+        } else {
             holder.unirse.visibility = View.GONE
         }
 
-        if (item_actual.aforoactual <= item_actual.aforomax.toString().toDouble()/2!!) {
+        if (item_actual.aforoactual.toInt() <= item_actual.aforomax.toString().toDouble() / 2!!) {
             holder.disponible.background = contexto.getDrawable(R.color.green)
-        } else if (item_actual.aforoactual.toString().toDouble() == item_actual.aforomax.toString().toDouble()) {
+        } else if (item_actual.aforoactual.toString().toDouble() == item_actual.aforomax.toString()
+                .toDouble()
+        ) {
             holder.disponible.background = contexto.getDrawable(R.color.red)
-        }else{
+        } else {
             holder.disponible.background = contexto.getDrawable(R.color.orange)
         }
 
@@ -94,12 +96,14 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
                         // Crear una instancia del fragment, establecer los argumentos y abrir el fragment
                         val fragment = EditarEventoFragment()
                         fragment.arguments = bundle
-                        val transaction = (contexto as Administrador).supportFragmentManager.beginTransaction()
+                        val transaction =
+                            (contexto as Administrador).supportFragmentManager.beginTransaction()
                         transaction.replace(R.id.fragment_container, fragment)
                         transaction.addToBackStack(null)
                         transaction.commit()
                         true
                     }
+
                     R.id.del -> {
                         //Se avisa al usuario si quirere borrar ese objeto
                         val builder = AlertDialog.Builder(contexto)
@@ -108,7 +112,8 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
                         builder.setPositiveButton("Si") { dialog, which ->
                             //se elimina el objeto de la base de datos
                             val db_ref = FirebaseDatabase.getInstance().reference
-                            db_ref.child("Tienda").child("Eventos").child(item_actual.id!!).removeValue()
+                            db_ref.child("Tienda").child("Eventos").child(item_actual.id!!)
+                                .removeValue()
                             //se elimina el objeto de la lista
                             lista_filtrada.removeAt(position)
                             notifyDataSetChanged()
@@ -120,11 +125,16 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
                         builder.show()
                         true
                     }
+
                     else -> false
                 }
             }
             popupMenu.show()
             true
+        }
+
+        holder.unirse.setOnClickListener {
+            Utilidades.apuntarseEvento(item_actual, contexto)
         }
 
     }
