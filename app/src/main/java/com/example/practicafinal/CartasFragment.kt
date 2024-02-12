@@ -62,7 +62,7 @@ class CartasFragment : Fragment() {
 
                     var admin = Utilidades.cogerAdmin(requireContext())
                     if (admin == "0") {
-                        if (pojocarta?.disponible == true) {
+                        if (pojocarta?.disponible == "1") {
                             lista.add(pojocarta!!)
                         }
                     } else {
@@ -150,6 +150,8 @@ class CartasFragment : Fragment() {
         bind.opciones.setOnClickListener {
             Utilidades.showPopupMenuOptions(it, requireContext())
         }
+
+
 
     }
 

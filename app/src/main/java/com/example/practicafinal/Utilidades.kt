@@ -87,9 +87,7 @@ class Utilidades(context: Context) {
         }
 
 
-        fun subirUsuario(usuario: Usuario) {
-            db_ref.child("Tienda").child("Usuarios").child(usuario.id).setValue(usuario)
-        }
+
         suspend fun cogerUsuario():Usuario?{
             var user:Usuario? = null
             val datasnapshot = db_ref.child("Tienda").child("Usuarios").child(FirebaseAuth.getInstance().uid!!).get().await()
@@ -116,6 +114,15 @@ class Utilidades(context: Context) {
             return urlimagenfirebase.toString()
 
         }
+        suspend fun guardarImagenUser(urlimg: Uri): String {
+            lateinit var urlimagenfirebase: Uri
+
+            urlimagenfirebase = st.child("Tienda").child("Usuarios").child(auth.uid.toString())
+                .putFile(urlimg).await().storage.downloadUrl.await()
+
+            return urlimagenfirebase.toString()
+
+        }
 
         fun subirCarta(nuevacarta: Carta) {
             db_ref.child("Tienda").child("Cartas").child(nuevacarta.id!!).setValue(nuevacarta)
@@ -123,9 +130,15 @@ class Utilidades(context: Context) {
         fun subirEvento(nuevoevento: Evento) {
             db_ref.child("Tienda").child("Eventos").child(nuevoevento.id!!).setValue(nuevoevento)
         }
+        fun subirPedido(pedido: Pedido) {
+            db_ref.child("Tienda").child("Pedidos").child(pedido.id!!).setValue(pedido)
+        }
+        fun subirUsuario(usuario: Usuario) {
+            db_ref.child("Tienda").child("Usuarios").child(usuario.id).setValue(usuario)
+        }
 
 
-        fun animacion_carga(contexto: Context): CircularProgressDrawable {
+        private fun animacion_carga(contexto: Context): CircularProgressDrawable {
             val animacion = CircularProgressDrawable(contexto)
             animacion.strokeWidth = 5f
             animacion.centerRadius = 30f
@@ -165,15 +178,8 @@ class Utilidades(context: Context) {
 
 
 
-        suspend fun guardarImagenUser(urlimg: Uri): String {
-            lateinit var urlimagenfirebase: Uri
 
-            urlimagenfirebase = st.child("Tienda").child("Usuarios").child(auth.uid.toString())
-                .putFile(urlimg).await().storage.downloadUrl.await()
 
-            return urlimagenfirebase.toString()
-
-        }
 
 
 

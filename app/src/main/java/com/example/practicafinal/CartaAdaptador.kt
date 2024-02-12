@@ -31,7 +31,7 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
         val categoria: TextView = itemView.findViewById(R.id.categoria)
         val imagen: ImageView = itemView.findViewById(R.id.img)
         val disponible: View = itemView.findViewById(R.id.disponible)
-        val comprar:Button = itemView.findViewById(R.id.comprar)
+        val comprar: Button = itemView.findViewById(R.id.comprar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartaViewHolder {
@@ -52,15 +52,17 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
         if (Utilidades.cogerAdmin(contexto) == "0") {
             holder.disponible.visibility = View.INVISIBLE
             holder.comprar.visibility = View.VISIBLE
-        }else{
+        } else {
             holder.disponible.visibility = View.VISIBLE
             holder.comprar.visibility = View.INVISIBLE
         }
 
-        if (item_actual.disponible) {
+        if (item_actual.disponible == "1") {
             holder.disponible.background = contexto.getDrawable(R.drawable.fondo_disponible)
-        } else {
+        } else if (item_actual.disponible == "0") {
             holder.disponible.background = contexto.getDrawable(R.drawable.fondo_nodisponible)
+        }else{
+            holder.disponible.background = contexto.getDrawable(R.drawable.fondo_pedido)
         }
 
         val URL: String? = when (item_actual.imagen) {
@@ -92,7 +94,7 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
                             bundle.putString("precio", item_actual.precio)
                             bundle.putString("categoria", item_actual.categoria)
                             bundle.putString("imagen", item_actual.imagen)
-                            bundle.putBoolean("disponible", item_actual.disponible)
+                            bundle.putString("disponible", item_actual.disponible!!)
                             bundle.putString("id", item_actual.id)
 
                             // Crear una instancia del fragment, establecer los argumentos y abrir el fragment
@@ -141,7 +143,26 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
         }
 
         holder.comprar.setOnClickListener {
+            //alerta para confirmar la compra
+            val builder = AlertDialog.Builder(contexto)
+            builder.setTitle("Comprar")
+            builder.setMessage("¿Estas seguro de que quieres comprar este objeto?. Se enviara una peticion al administrador y este te confirmara el pedido")
+            builder.setPositiveButton("Si") { dialog, which ->
+                //se envia la peticion al administrador
+                var idpedido = Utilidades.db_ref.child("Tienda").child("Pedidos").push().key
+                var pedido = Pedido(idpedido, Utilidades.auth.uid, item_actual.id, item_actual.nombre)
+                Utilidades.subirPedido(pedido)
+                Toast.makeText(contexto, "Solicitud de pedido enviada", Toast.LENGTH_SHORT).show()
+                //poner como no disponible esa carta en la base de datos y en la lista
+                Utilidades.db_ref.child("Tienda").child("Cartas").child(item_actual.id!!).child("disponible")
+                    .setValue("2")
 
+            }
+            builder.setNegativeButton("No") { dialog, which ->
+                //se cancela la compra
+
+            }
+            builder.show()
         }
 
 
@@ -157,7 +178,7 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
 
                 Log.d("ADMIN", admin.toString())
 
-                if (admin == "1"){
+                if (admin == "1") {
                     if (busqueda.isEmpty()) {
                         lista_filtrada = lista_cartas
                     } else {
@@ -165,12 +186,13 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
                             it.nombre.toString().lowercase().contains(busqueda)
                         }) as MutableList<Carta>
                     }
-                }else{
+                } else {
                     if (busqueda.isEmpty()) {
-                        lista_filtrada = (lista_cartas.filter { it.disponible }) as MutableList<Carta>
+                        lista_filtrada =
+                            (lista_cartas.filter { it.disponible=="1" }) as MutableList<Carta>
                     } else {
                         lista_filtrada = (lista_cartas.filter {
-                            it.disponible && it.nombre.toString().lowercase().contains(busqueda)
+                            it.disponible=="1" && it.nombre.toString().lowercase().contains(busqueda)
                         }) as MutableList<Carta>
                     }
                 }

@@ -128,7 +128,13 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
                 var nombre = bind.etNombre.text.toString()
                 var precio = bind.etPrecio.text.toString()
                 var categoria = bind.spCat.selectedItem.toString()
-                var disponible = bind.chkDisponible.isChecked
+                var disponible: String
+                if (bind.chkDisponible.isChecked){
+                    disponible = "1"
+                }else{
+                    disponible = "0"
+                }
+
                 var id_generado: String? = arguments?.getString("id")
 
                 var url_foto_firebase : String
@@ -182,7 +188,7 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
             categoria = true
         }
 
-        if(Utilidades.existeCarta(listacartas, bind.etNombre.text.toString().trim())) {
+        if(Utilidades.existeCarta(listacartas, bind.etNombre.text.toString().trim()) && bind.etNombre.text.toString().trim() != arguments?.getString("nombre")!!){
             Toast.makeText(requireContext(), "Esa carta ya existe", Toast.LENGTH_SHORT)
                 .show()
             bexiste = false

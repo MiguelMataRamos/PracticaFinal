@@ -5,6 +5,6 @@ data class Carta(
     var nombre: String? = null,
     var categoria: String? = null,
     var precio: String? = null,
-    var disponible: Boolean = false,
+    var disponible: String? = "0",
     var imagen: String? = null
 )

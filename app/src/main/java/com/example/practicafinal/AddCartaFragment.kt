@@ -87,7 +87,12 @@ class AddCartaFragment: Fragment(), CoroutineScope {
                 var nombre = bind.etNombre.text.toString()
                 var precio = bind.etPrecio.text.toString()
                 var categoria = bind.spCat.selectedItem.toString()
-                var disponible = bind.chkDisponible.isChecked
+                var disponible:String
+                if (bind.chkDisponible.isChecked){
+                    disponible="1"
+                }else{
+                    disponible="0"
+                }
                 launch {
                     var urlimgfirebase = Utilidades.guardarImagenCarta(id_generado!!, urlimg!!)
                     var nuevacarta = Carta(id_generado, nombre, categoria, precio,disponible, urlimgfirebase)
