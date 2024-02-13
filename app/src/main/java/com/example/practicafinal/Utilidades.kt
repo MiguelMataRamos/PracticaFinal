@@ -31,11 +31,12 @@ class Utilidades(context: Context) {
         var auth = FirebaseAuth.getInstance()
 
 
-        fun cogerAdmin(context: Context): String{
+        fun cogerAdmin(context: Context): String {
             var sp = PreferenceManager.getDefaultSharedPreferences(context)
             var admin = sp.getString("admin", "0")
             return admin!!
         }
+
         fun obtenerListaCartas(db_reff: DatabaseReference): MutableList<Carta> {
             var lista = mutableListOf<Carta>()
 
@@ -55,6 +56,7 @@ class Utilidades(context: Context) {
 
             return lista
         }
+
         fun obtenerListaEventos(): MutableList<Evento> {
             var lista = mutableListOf<Evento>()
 
@@ -80,6 +82,7 @@ class Utilidades(context: Context) {
                 it.nombre!!.lowercase() == nombre.lowercase()
             }
         }
+
         fun existeEvento(eventos: List<Evento>, nombre: String): Boolean {
             return eventos.any {
                 it.nombre!!.lowercase() == nombre.lowercase()
@@ -87,10 +90,11 @@ class Utilidades(context: Context) {
         }
 
 
-
-        suspend fun cogerUsuario():Usuario?{
-            var user:Usuario? = null
-            val datasnapshot = db_ref.child("Tienda").child("Usuarios").child(FirebaseAuth.getInstance().uid!!).get().await()
+        suspend fun cogerUsuario(): Usuario? {
+            var user: Usuario? = null
+            val datasnapshot =
+                db_ref.child("Tienda").child("Usuarios").child(FirebaseAuth.getInstance().uid!!)
+                    .get().await()
             user = datasnapshot.getValue(Usuario::class.java)
             return user
         }
@@ -104,6 +108,7 @@ class Utilidades(context: Context) {
             return urlimagenfirebase.toString()
 
         }
+
         suspend fun guardarImagenEvento(idGenerado: String, urlimg: Uri): String {
 
             lateinit var urlimagenfirebase: Uri
@@ -114,6 +119,7 @@ class Utilidades(context: Context) {
             return urlimagenfirebase.toString()
 
         }
+
         suspend fun guardarImagenUser(urlimg: Uri): String {
             lateinit var urlimagenfirebase: Uri
 
@@ -127,12 +133,15 @@ class Utilidades(context: Context) {
         fun subirCarta(nuevacarta: Carta) {
             db_ref.child("Tienda").child("Cartas").child(nuevacarta.id!!).setValue(nuevacarta)
         }
+
         fun subirEvento(nuevoevento: Evento) {
             db_ref.child("Tienda").child("Eventos").child(nuevoevento.id!!).setValue(nuevoevento)
         }
+
         fun subirPedido(pedido: Pedido) {
             db_ref.child("Tienda").child("Pedidos").child(pedido.id!!).setValue(pedido)
         }
+
         fun subirUsuario(usuario: Usuario) {
             db_ref.child("Tienda").child("Usuarios").child(usuario.id).setValue(usuario)
         }
@@ -145,6 +154,7 @@ class Utilidades(context: Context) {
             animacion.start()
             return animacion
         }
+
         val transicion = DrawableTransitionOptions.withCrossFade(500)
         fun opcionesGlide(context: Context): com.bumptech.glide.request.RequestOptions {
             val options = com.bumptech.glide.request.RequestOptions()
@@ -154,7 +164,7 @@ class Utilidades(context: Context) {
             return options
         }
 
-        fun showPopupMenuOptions(view: View, context:Context) {
+        fun showPopupMenuOptions(view: View, context: Context) {
             val popupMenu = PopupMenu(context, view)
             popupMenu.menuInflater.inflate(R.menu.menu_opciones, popupMenu.menu)
 
@@ -170,6 +180,7 @@ class Utilidades(context: Context) {
                         context.startActivity(intent)
                         true
                     }
+
                     else -> false
                 }
             }
@@ -179,10 +190,20 @@ class Utilidades(context: Context) {
         fun apuntarseEvento(itemActual: Evento, contexto: Context) {
             var aforo = itemActual.aforoactual!!.toInt()
 
-            aforo ++
-            db_ref.child("Tienda").child("Eventos").child(itemActual.id!!).child("aforoactual").setValue(aforo.toString())
+            aforo++
+            db_ref.child("Tienda").child("Eventos").child(itemActual.id!!).child("aforoactual")
+                .setValue(aforo.toString())
 
             Toast.makeText(contexto, "Te has apuntado al evento", Toast.LENGTH_SHORT).show()
+        }
+
+        //coge la fecha actual y la formatea xx/xx/xxxx
+        fun cogerFecha(): String {
+            val c = java.util.Calendar.getInstance()
+            val dia = c.get(java.util.Calendar.DAY_OF_MONTH)
+            val mes = c.get(java.util.Calendar.MONTH) + 1
+            val anio = c.get(java.util.Calendar.YEAR)
+            return "$dia/$mes/$anio"
         }
 
 

@@ -150,10 +150,14 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
             builder.setPositiveButton("Si") { dialog, which ->
                 //se envia la peticion al administrador
                 var idpedido = Utilidades.db_ref.child("Tienda").child("Pedidos").push().key
-                var pedido = Pedido(idpedido, Utilidades.auth.uid, item_actual.id, item_actual.nombre)
+                idpedido = idpedido+"_"+item_actual.nombre
+
+                var fecha = Utilidades.cogerFecha()
+
+                var pedido = Pedido(idpedido, Utilidades.auth.uid, item_actual.id, item_actual.nombre, item_actual.precio!!.toDouble(), fecha)
                 Utilidades.subirPedido(pedido)
                 Toast.makeText(contexto, "Solicitud de pedido enviada", Toast.LENGTH_SHORT).show()
-                //poner como no disponible esa carta en la base de datos y en la lista
+                //poner como no procesando esa carta en la base de datos y en la lista
                 Utilidades.db_ref.child("Tienda").child("Cartas").child(item_actual.id!!).child("disponible")
                     .setValue("2")
 
