@@ -7,5 +7,5 @@ data class Pedido (
     var nombrecarta: String? = null,
     var precio: Double? = 0.0,
     var fecha: String? = null,
-    var estado: Int? = 0
+    var estado: String? = "0"
     )

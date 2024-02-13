@@ -2,9 +2,6 @@ package com.example.practicafinal
 
 import android.content.Context
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,10 +23,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [AdminPedidosFragment.newInstance] factory method to
+ * Use the [PedidosFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AdminPedidosFragment : Fragment() {
+class PedidosFragment : Fragment() {
     private lateinit var bind: FragmentPedidosBinding
     private lateinit var lista: MutableList<Pedido>
     private lateinit var db_ref: DatabaseReference
@@ -59,8 +56,9 @@ class AdminPedidosFragment : Fragment() {
                 snapshot.children.forEach { hijo: DataSnapshot? ->
                     val pojopedido = hijo!!.getValue(Pedido::class.java)
 
-                    lista.add(pojopedido!!)
-
+                    if (pojopedido!!.estado == "0"){
+                        lista.add(pojopedido!!)
+                    }
 
                 }
                 recycler.adapter?.notifyDataSetChanged()
@@ -160,7 +158,7 @@ class AdminPedidosFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            AdminPedidosFragment().apply {
+            PedidosFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

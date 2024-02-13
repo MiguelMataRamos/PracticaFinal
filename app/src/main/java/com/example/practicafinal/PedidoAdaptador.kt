@@ -1,14 +1,18 @@
 package com.example.practicafinal
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Filterable
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class PedidoAdaptador(private var lista_pedidos: MutableList<Pedido>) :
-    RecyclerView.Adapter<PedidoAdaptador.PedidoViewHolder>() {
+    RecyclerView.Adapter<PedidoAdaptador.PedidoViewHolder>(){
     private lateinit var contexto: Context
     private var lista_filtrada = lista_pedidos
 
@@ -19,6 +23,10 @@ class PedidoAdaptador(private var lista_pedidos: MutableList<Pedido>) :
         val precio: TextView = itemView.findViewById(R.id.precio)
         val nombre_carta: TextView = itemView.findViewById(R.id.nombre_carta)
         val fecha: TextView = itemView.findViewById(R.id.fecha)
+        val vender: Button = itemView.findViewById(R.id.vender)
+        val denegar: Button = itemView.findViewById(R.id.denegar)
+        val desplegable: View = itemView.findViewById(R.id.desplegable)
+        val btn_desplegar: ImageView = itemView.findViewById(R.id.boton_desplegable)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PedidoViewHolder {
@@ -38,7 +46,32 @@ class PedidoAdaptador(private var lista_pedidos: MutableList<Pedido>) :
         holder.precio.text = item_actual.precio.toString()
         holder.nombre_carta.text = item_actual.nombrecarta
         holder.fecha.text = item_actual.fecha
+
+        holder.btn_desplegar.setOnClickListener {
+            if (holder.desplegable.visibility == View.VISIBLE) {
+                holder.desplegable.visibility = View.GONE
+                holder.btn_desplegar.setImageResource(R.drawable.abrir)
+            } else {
+                holder.desplegable.visibility = View.VISIBLE
+                holder.btn_desplegar.setImageResource(R.drawable.cerrar)
+            }
+        }
+
+        holder.vender.setOnClickListener {
+            AlertDialog.Builder(contexto)
+                .setTitle("Vender pedido")
+                .setMessage("¿Estás seguro de que quieres vender este pedido?")
+                .setPositiveButton("Sí") { dialog, which ->
+                    Utilidades.venderPedido(contexto, item_actual)
+                    holder.desplegable.visibility = View.GONE
+                    holder.btn_desplegar.setImageResource(R.drawable.abrir)
+                }
+                .setNegativeButton("No") { dialog, which -> }
+                .show()
+        }
+
     }
+
 
 
 }

@@ -206,6 +206,12 @@ class Utilidades(context: Context) {
             return "$dia/$mes/$anio"
         }
 
+        fun venderPedido(contexto: Context, itemActual: Pedido) {
+            db_ref.child("Tienda").child("Pedidos").child(itemActual.id!!).child("estado")
+                .setValue("1")
+            Toast.makeText(contexto, "Pedido vendido", Toast.LENGTH_SHORT).show()
+        }
+
 
     }
 

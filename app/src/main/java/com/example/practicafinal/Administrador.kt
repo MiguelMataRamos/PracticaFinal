@@ -30,7 +30,7 @@ class Administrador : AppCompatActivity() {
             }
                 R.id.pedidos -> {
                     supportFragmentManager.commit {
-                        replace<AdminPedidosFragment>(R.id.fragment_container)
+                        replace<PedidosFragment>(R.id.fragment_container)
                         setReorderingAllowed(true)
                         addToBackStack("replacement")
                     }
