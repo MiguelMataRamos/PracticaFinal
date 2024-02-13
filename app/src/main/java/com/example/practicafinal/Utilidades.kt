@@ -209,7 +209,19 @@ class Utilidades(context: Context) {
         fun venderPedido(contexto: Context, itemActual: Pedido) {
             db_ref.child("Tienda").child("Pedidos").child(itemActual.id!!).child("estado")
                 .setValue("1")
+            db_ref.child("Tienda").child("Cartas").child(itemActual.idcarta!!).child("disponible")
+                .setValue("0")
             Toast.makeText(contexto, "Pedido vendido", Toast.LENGTH_SHORT).show()
+        }
+
+        fun denegarPedido(contexto: Context, itemActual: Pedido) {
+            //borrar de la base de datos
+            db_ref.child("Tienda").child("Pedidos").child(itemActual.id!!).removeValue()
+            //poner carta como disponible
+            db_ref.child("Tienda").child("Cartas").child(itemActual.idcarta!!).child("disponible")
+                .setValue("1")
+            Toast.makeText(contexto, "Pedido denegado", Toast.LENGTH_SHORT).show()
+
         }
 
 

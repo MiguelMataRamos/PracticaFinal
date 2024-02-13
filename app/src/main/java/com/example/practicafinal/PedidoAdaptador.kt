@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class PedidoAdaptador(private var lista_pedidos: MutableList<Pedido>) :
-    RecyclerView.Adapter<PedidoAdaptador.PedidoViewHolder>(){
+    RecyclerView.Adapter<PedidoAdaptador.PedidoViewHolder>() {
     private lateinit var contexto: Context
     private var lista_filtrada = lista_pedidos
 
@@ -60,7 +60,7 @@ class PedidoAdaptador(private var lista_pedidos: MutableList<Pedido>) :
         holder.vender.setOnClickListener {
             AlertDialog.Builder(contexto)
                 .setTitle("Vender pedido")
-                .setMessage("¿Estás seguro de que quieres vender este pedido?")
+                .setMessage("¿Estás seguro de que quieres vender este pedido?. La carta se pondra como no disponible.")
                 .setPositiveButton("Sí") { dialog, which ->
                     Utilidades.venderPedido(contexto, item_actual)
                     holder.desplegable.visibility = View.GONE
@@ -70,8 +70,20 @@ class PedidoAdaptador(private var lista_pedidos: MutableList<Pedido>) :
                 .show()
         }
 
-    }
+        holder.denegar.setOnClickListener {
+            AlertDialog.Builder(contexto)
+                .setTitle("Denegar pedido")
+                .setMessage("¿Estás seguro de que quieres denegar este pedido?. La carta se pondra como disponible para todos los usuarios.")
+                .setPositiveButton("Sí") { dialog, which ->
+                    Utilidades.denegarPedido(contexto, item_actual)
+                    holder.desplegable.visibility = View.GONE
+                    holder.btn_desplegar.setImageResource(R.drawable.abrir)
+                }
+                .setNegativeButton("No") { dialog, which -> }
+                .show()
+        }
 
+    }
 
 
 }
