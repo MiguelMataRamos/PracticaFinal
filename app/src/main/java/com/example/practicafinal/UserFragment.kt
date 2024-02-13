@@ -109,6 +109,16 @@ class UserFragment : Fragment(), CoroutineScope {
             popupMenu.show()
         }
 
+        bind.verCartas.setOnClickListener {
+            //abrir fragment de cartasuser
+            val fragment = CartasUserFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+
+        }
+
 
 
     }

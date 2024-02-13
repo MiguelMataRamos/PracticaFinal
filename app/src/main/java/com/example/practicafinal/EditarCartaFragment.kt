@@ -73,7 +73,6 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
         val imagen = arguments?.getString("imagen")
         val disponible = arguments?.getBoolean("disponible")
 
-
         val categorias = arrayOf("Selecciona categoria", "Blanco", "Negro", "Azul", "Verde")
         val adapter =
             ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, categorias)

@@ -188,7 +188,7 @@ class EditarEventoFragment : Fragment(), CoroutineScope {
             fecha = true
         }
 
-        if (Utilidades.existeEvento(listaeventos, bind.etNombre.text.toString().trim())) {
+        if (Utilidades.existeEvento(listaeventos, bind.etNombre.text.toString().trim()) && bind.etNombre.text.toString().trim() != arguments?.getString("nombre")!!) {
             Toast.makeText(requireContext(), "Ese evento ya existe", Toast.LENGTH_SHORT)
                 .show()
             existe = false
