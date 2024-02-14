@@ -58,12 +58,17 @@ class CartasUserFragment : Fragment() {
                     //comprueba que el pedido pertenece al usuario actual
                     if (hijo!!.child("idusuario").value.toString() == FirebaseAuth.getInstance().uid.toString()) {
                         //se coge la carta del pedido
-                        db_ref.child("Tienda").child("Cartas").child(hijo.child("id").value.toString()).addValueEventListener(object : ValueEventListener {
+                        var cartas = db_ref.child("Tienda").child("Cartas")
+                        cartas.addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
-                                val pojocarta = snapshot.getValue(Carta::class.java)
-                                Log.d("CARTA", pojocarta!!.nombre.toString())
-                                lista.add(pojocarta!!)
-                                adaptador.notifyDataSetChanged()
+                                //se coge la carta y se añade a la lista
+                                var carta = snapshot.getValue(Carta::class.java)
+                                if (carta != null) {
+                                    Log.v("CARTA", carta.toString())
+                                    lista.add(carta)
+                                    adaptador.notifyDataSetChanged()
+                                }
+
                             }
 
                             override fun onCancelled(error: DatabaseError) {
