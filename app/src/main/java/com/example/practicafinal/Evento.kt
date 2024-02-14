@@ -8,4 +8,5 @@ data class Evento(
     var aforoactual: String = "0",
     var aforomax: String? = null,
     var imagen: String? = null,
+    var lista_asistentes: MutableList<String>? = mutableListOf("")
     )

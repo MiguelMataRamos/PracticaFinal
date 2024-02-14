@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
@@ -97,6 +98,7 @@ class Utilidades(context: Context) {
                 db_ref.child("Tienda").child("Usuarios").child(FirebaseAuth.getInstance().uid!!)
                     .get().await()
             user = datasnapshot.getValue(Usuario::class.java)
+
             return user
         }
 
@@ -191,10 +193,15 @@ class Utilidades(context: Context) {
         fun apuntarseEvento(itemActual: Evento, contexto: Context) {
             var aforo = itemActual.aforoactual!!.toInt()
 
-            aforo++
-            db_ref.child("Tienda").child("Eventos").child(itemActual.id!!).child("aforoactual")
-                .setValue(aforo.toString())
+            itemActual.aforoactual = (aforo + 1).toString()
 
+            if (itemActual.lista_asistentes?.get(0) =="") {
+                itemActual.lista_asistentes!![0] = FirebaseAuth.getInstance().uid.toString()
+            }else{
+                itemActual.lista_asistentes?.add(FirebaseAuth.getInstance().uid.toString())
+            }
+
+            db_ref.child("Tienda").child("Eventos").child(itemActual.id!!).setValue(itemActual)
             Toast.makeText(contexto, "Te has apuntado al evento", Toast.LENGTH_SHORT).show()
         }
 
@@ -224,8 +231,6 @@ class Utilidades(context: Context) {
             Toast.makeText(contexto, "Pedido denegado", Toast.LENGTH_SHORT).show()
 
         }
-
-
 
 
     }
