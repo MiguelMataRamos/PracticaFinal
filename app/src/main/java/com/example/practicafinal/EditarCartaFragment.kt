@@ -150,10 +150,15 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
                 }
 
                 Toast.makeText(requireContext(), "Carta editada con exito", Toast.LENGTH_SHORT).show()
-                limpiar()
+                onBackPressed()
             }
         }
 
+    }
+
+    fun onBackPressed(){
+        val intent = Intent(requireContext(), Administrador::class.java)
+        startActivity(intent)
     }
 
     private fun validar():Boolean{

@@ -3,6 +3,7 @@ package com.example.practicafinal
 import android.R
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
 import android.net.Uri
@@ -39,6 +40,7 @@ class AddEventoFragment : Fragment(), CoroutineScope {
     private lateinit var bind: FragmentAddEventoBinding
     private var urlimg: Uri? = null
     private lateinit var listaeventos: MutableList<Evento>
+    private lateinit var contexto: Context
 
 
     // TODO: Rename and change types of parameters
@@ -51,6 +53,8 @@ class AddEventoFragment : Fragment(), CoroutineScope {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        contexto = requireContext()
 
         bind = FragmentAddEventoBinding.inflate(layoutInflater)
         db_ref = FirebaseDatabase.getInstance().reference
@@ -90,7 +94,7 @@ class AddEventoFragment : Fragment(), CoroutineScope {
                 }
 
                 Toast.makeText(requireContext(), "Evento creado con exito", Toast.LENGTH_SHORT).show()
-                limpiar()
+                onBackPressed()
             }
         }
 
@@ -190,6 +194,16 @@ class AddEventoFragment : Fragment(), CoroutineScope {
 
         return nombre && precio && foto && aforo && fecha && existe
 
+    }
+
+    fun onBackPressed(){
+        //abrir fragment de eventos
+        val fragment = EventosFragment()
+        val transaction =
+            (contexto as Administrador).supportFragmentManager.beginTransaction()
+        transaction.replace(com.example.practicafinal.R.id.fragment_container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
     private fun limpiar(){

@@ -1,5 +1,6 @@
 package com.example.practicafinal
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -38,6 +39,7 @@ class UserFragment : Fragment(), CoroutineScope {
     private lateinit var bind: FragmentUserBinding
     private var urlimg: Uri? = null
     private lateinit var db_ref :DatabaseReference
+    private lateinit var contexto : Context
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -49,6 +51,8 @@ class UserFragment : Fragment(), CoroutineScope {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        contexto = requireContext()
 
         bind = FragmentUserBinding.inflate(layoutInflater)
 

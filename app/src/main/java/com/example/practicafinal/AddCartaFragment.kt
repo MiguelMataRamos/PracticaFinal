@@ -101,7 +101,8 @@ class AddCartaFragment: Fragment(), CoroutineScope {
                 }
 
                 Toast.makeText(requireContext(), "Carta guardada con exito", Toast.LENGTH_SHORT).show()
-                limpiar()
+                // ir al fragment anterior
+                onbackPressed()
             }
         }
 
@@ -184,7 +185,11 @@ class AddCartaFragment: Fragment(), CoroutineScope {
         bind.img.setImageResource(R.drawable.ic_menu_camera)
     }
 
-
+    //funcion que va al fragment anterior
+    fun onbackPressed(){
+        var intent = Intent(requireContext(), Administrador::class.java)
+        startActivity(intent)
+    }
 
     companion object {
         /**

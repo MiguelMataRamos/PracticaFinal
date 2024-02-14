@@ -55,28 +55,40 @@ class CartasUserFragment : Fragment() {
         //recorre cada pedido y si la id del cliente es igual a la del usriaio actual se añade a la lista de cartas dicha carta la cual se cogera de la base de datos
         db_ref.child("Tienda").child("Pedidos").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                val pojopedido = snapshot.getValue(Pedido::class.java)
+                if (pojopedido!!.idusuario == FirebaseAuth.getInstance().uid.toString() && pojopedido.estado != "0") {
+                    //cogemos una carta especifica de la base de datos y la guardamos como objeto carta
+                    db_ref.child("Tienda").child("Cartas").child(pojopedido.idcarta!!).addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val pojocarta = snapshot.getValue(Carta::class.java)
+                            lista.add(pojocarta!!)
+                            adaptador.notifyDataSetChanged()
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.e("ERROR", error.message)
+                        }
+                    })
+                }
                 lista.clear()
                 snapshot.children.forEach { hijo: DataSnapshot? ->
                     //comprueba que el pedido pertenece al usuario actual
-                    if (hijo!!.child("idusuario").value.toString() == FirebaseAuth.getInstance().uid.toString()) {
+                    if (hijo!!.child("idusuario").value.toString() == FirebaseAuth.getInstance().uid.toString()
+                        && hijo.child("estado").value.toString() != "0"
+                    ) {
                         //se coge la carta del pedido
-                        var cartas = db_ref.child("Tienda").child("Cartas")
-                        cartas.addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                //se coge la carta y se añade a la lista
-                                var carta = snapshot.getValue(Carta::class.java)
-                                if (carta != null) {
-                                    Log.v("CARTA", carta.toString())
-                                    lista.add(carta)
+                        db_ref.child("Tienda").child("Cartas").child(hijo.child("idcarta").value.toString())
+                            .addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val pojocarta = snapshot.getValue(Carta::class.java)
+                                    lista.add(pojocarta!!)
                                     adaptador.notifyDataSetChanged()
                                 }
 
-                            }
-
-                            override fun onCancelled(error: DatabaseError) {
-                                Log.e("ERROR", error.message)
-                            }
-                        })
+                                override fun onCancelled(error: DatabaseError) {
+                                    Log.e("ERROR", error.message)
+                                }
+                            })
                     }
                 }
             }
@@ -87,7 +99,7 @@ class CartasUserFragment : Fragment() {
         })
 
         //se crea el adaptador y se le pasa la lista de productos
-        adaptador = CartaAdaptador(lista)
+        adaptador = CartaAdaptador(lista, "CartasUserFragment")
         //se le pasa el adaptador al recycler
         recycler = bind.scCartas
         recycler.adapter = adaptador
@@ -143,7 +155,6 @@ class CartasUserFragment : Fragment() {
         bind.opciones.setOnClickListener {
             Utilidades.showPopupMenuOptions(it, requireContext())
         }
-
 
 
     }

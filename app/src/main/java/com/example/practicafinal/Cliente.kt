@@ -1,5 +1,6 @@
 package com.example.practicafinal
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.commit
@@ -39,6 +40,14 @@ class Cliente : AppCompatActivity() {
 
         }
         false
+    }
+
+    //cuando se pulse el boton atras del dispositivo se cierra la app
+    override fun onBackPressed() {
+        cerrarApp()
+    }
+    fun cerrarApp() {
+        this.finishAffinity()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

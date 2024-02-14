@@ -57,4 +57,11 @@ class Administrador : AppCompatActivity() {
         }
 
     }
+
+    override fun onBackPressed() {
+        cerrarApp()
+    }
+    fun cerrarApp() {
+        this.finishAffinity()
+    }
 }

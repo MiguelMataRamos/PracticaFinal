@@ -78,7 +78,7 @@ class CartasFragment : Fragment() {
         })
 
         //se crea el adaptador y se le pasa la lista de productos
-        adaptador = CartaAdaptador(lista)
+        adaptador = CartaAdaptador(lista, "CartasFragment")
         //se le pasa el adaptador al recycler
         recycler = bind.scCartas
         recycler.adapter = adaptador

@@ -20,7 +20,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.FirebaseDatabase
 
-class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
+class CartaAdaptador(
+    private var lista_cartas: MutableList<Carta>,
+    private val fragmentoActual: String
+) :
     RecyclerView.Adapter<CartaAdaptador.CartaViewHolder>(), Filterable {
     private lateinit var contexto: Context
     private var lista_filtrada = lista_cartas
@@ -46,22 +49,28 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
     override fun onBindViewHolder(holder: CartaViewHolder, position: Int) {
         val item_actual = lista_filtrada[position]
         holder.nombre.text = item_actual.nombre
+        Log.v("nombre", item_actual.nombre.toString())
         holder.precio.text = item_actual.precio
         holder.categoria.text = item_actual.categoria
 
         if (Utilidades.cogerAdmin(contexto) == "0") {
+            if (fragmentoActual == "CartasUserFragment") {
+                holder.comprar.visibility = View.GONE
+            }else{
+                holder.comprar.visibility = View.VISIBLE
+            }
             holder.disponible.visibility = View.INVISIBLE
-            holder.comprar.visibility = View.VISIBLE
         } else {
             holder.disponible.visibility = View.VISIBLE
             holder.comprar.visibility = View.INVISIBLE
         }
 
+
         if (item_actual.disponible == "1") {
             holder.disponible.background = contexto.getDrawable(R.drawable.fondo_disponible)
         } else if (item_actual.disponible == "0") {
             holder.disponible.background = contexto.getDrawable(R.drawable.fondo_nodisponible)
-        }else{
+        } else {
             holder.disponible.background = contexto.getDrawable(R.drawable.fondo_pedido)
         }
 
@@ -150,15 +159,23 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
             builder.setPositiveButton("Si") { dialog, which ->
                 //se envia la peticion al administrador
                 var idpedido = Utilidades.db_ref.child("Tienda").child("Pedidos").push().key
-                idpedido = idpedido+"_"+item_actual.nombre
+                idpedido = idpedido + "_" + item_actual.nombre
 
                 var fecha = Utilidades.cogerFecha()
 
-                var pedido = Pedido(idpedido, Utilidades.auth.uid, item_actual.id, item_actual.nombre, item_actual.precio!!.toDouble(), fecha)
+                var pedido = Pedido(
+                    idpedido,
+                    Utilidades.auth.uid,
+                    item_actual.id,
+                    item_actual.nombre,
+                    item_actual.precio!!.toDouble(),
+                    fecha
+                )
                 Utilidades.subirPedido(pedido)
                 Toast.makeText(contexto, "Solicitud de pedido enviada", Toast.LENGTH_SHORT).show()
                 //poner como no procesando esa carta en la base de datos y en la lista
-                Utilidades.db_ref.child("Tienda").child("Cartas").child(item_actual.id!!).child("disponible")
+                Utilidades.db_ref.child("Tienda").child("Cartas").child(item_actual.id!!)
+                    .child("disponible")
                     .setValue("2")
 
             }
@@ -193,10 +210,11 @@ class CartaAdaptador(private var lista_cartas: MutableList<Carta>) :
                 } else {
                     if (busqueda.isEmpty()) {
                         lista_filtrada =
-                            (lista_cartas.filter { it.disponible=="1" }) as MutableList<Carta>
+                            (lista_cartas.filter { it.disponible == "1" }) as MutableList<Carta>
                     } else {
                         lista_filtrada = (lista_cartas.filter {
-                            it.disponible=="1" && it.nombre.toString().lowercase().contains(busqueda)
+                            it.disponible == "1" && it.nombre.toString().lowercase()
+                                .contains(busqueda)
                         }) as MutableList<Carta>
                     }
                 }

@@ -2,6 +2,7 @@ package com.example.practicafinal
 
 import android.R
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -39,6 +40,7 @@ class EditarEventoFragment : Fragment(), CoroutineScope {
     private lateinit var db_ref: DatabaseReference
     private var urlimg: Uri? = null
     private lateinit var listaeventos: MutableList<Evento>
+    private lateinit var contexto: Context
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -51,6 +53,7 @@ class EditarEventoFragment : Fragment(), CoroutineScope {
             param2 = it.getString(ARG_PARAM2)
         }
 
+        contexto = requireContext()
         db_ref = FirebaseDatabase.getInstance().reference
 
         listaeventos = Utilidades.obtenerListaEventos()
@@ -143,7 +146,7 @@ class EditarEventoFragment : Fragment(), CoroutineScope {
 
                 Toast.makeText(requireContext(), "Evento editada con exito", Toast.LENGTH_SHORT)
                     .show()
-                limpiar()
+                onBackPressed()
             }
         }
 
@@ -208,6 +211,15 @@ class EditarEventoFragment : Fragment(), CoroutineScope {
         bind.etFecha.text = null
         bind.etAforo.text = null
         bind.img.setImageResource(R.drawable.ic_menu_camera)
+    }
+
+    fun onBackPressed(){
+        val fragment = EventosFragment()
+        val transaction =
+            (contexto as Administrador).supportFragmentManager.beginTransaction()
+        transaction.replace(com.example.practicafinal.R.id.fragment_container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
     companion object {
