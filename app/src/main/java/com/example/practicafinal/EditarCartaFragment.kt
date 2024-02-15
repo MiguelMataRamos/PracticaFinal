@@ -71,7 +71,7 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
         val precio = arguments?.getString("precio")
         val categoria = arguments?.getString("categoria")
         val imagen = arguments?.getString("imagen")
-        val disponible = arguments?.getBoolean("disponible")
+
 
         val categorias = arrayOf("Selecciona categoria", "Blanco", "Negro", "Azul", "Verde")
         val adapter =
@@ -88,7 +88,6 @@ class EditarCartaFragment : Fragment(), CoroutineScope {
         // Usar los datos obtenidos...
         bind.etNombre.setText(nombre)
         bind.etPrecio.setText(precio)
-        bind.chkDisponible.isChecked = disponible!!
         bind.imgEditar.setImageURI(imagen!!.toUri())
 
         Glide.with(requireContext())

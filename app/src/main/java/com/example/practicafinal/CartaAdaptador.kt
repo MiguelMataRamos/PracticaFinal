@@ -103,7 +103,6 @@ class CartaAdaptador(
                             bundle.putString("precio", item_actual.precio)
                             bundle.putString("categoria", item_actual.categoria)
                             bundle.putString("imagen", item_actual.imagen)
-                            bundle.putBoolean("disponible", item_actual.disponible.toBoolean())
                             bundle.putString("id", item_actual.id)
 
                             // Crear una instancia del fragment, establecer los argumentos y abrir el fragment
