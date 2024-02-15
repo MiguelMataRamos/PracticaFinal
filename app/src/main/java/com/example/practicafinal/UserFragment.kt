@@ -228,6 +228,10 @@ class UserFragment : Fragment(), CoroutineScope {
             popupMenu.show()
         }
 
+        bind.opciones.setOnClickListener {
+            Utilidades.showPopupMenuOptions(it, requireContext())
+        }
+
 
     }
 

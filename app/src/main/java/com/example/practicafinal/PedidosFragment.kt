@@ -94,14 +94,14 @@ class PedidosFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        bind.lupa.setOnClickListener {
-            mostrarBusqueda()
-        }
-
-        bind.close.setOnClickListener {
-            ocultarBusqueda()
-        }
-
+//        bind.lupa.setOnClickListener {
+//            mostrarBusqueda()
+//        }
+//
+//        bind.close.setOnClickListener {
+//            ocultarBusqueda()
+//        }
+//
 //        bind.buscarEt.addTextChangedListener(object : TextWatcher {
 //            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 //                null
@@ -125,26 +125,26 @@ class PedidosFragment : Fragment() {
             Utilidades.showPopupMenuOptions(it, requireContext())
         }
     }
-    fun mostrarBusqueda() {
-        bind.close.visibility = View.VISIBLE
-        bind.lupa.visibility = View.INVISIBLE
-        bind.buscarEt.visibility = View.VISIBLE
-        bind.opciones.visibility = View.INVISIBLE
-        val inputMethodManager =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(bind.buscarEt, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    fun ocultarBusqueda() {
-        bind.close.visibility = View.INVISIBLE
-        bind.lupa.visibility = View.VISIBLE
-        bind.buscarEt.visibility = View.INVISIBLE
-        bind.opciones.visibility = View.VISIBLE
-        val inputMethodManager =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(bind.buscarEt.windowToken, 0)
-        bind.buscarEt.setText("")
-    }
+//    fun mostrarBusqueda() {
+//        bind.close.visibility = View.VISIBLE
+//        bind.lupa.visibility = View.INVISIBLE
+//        bind.buscarEt.visibility = View.VISIBLE
+//        bind.opciones.visibility = View.INVISIBLE
+//        val inputMethodManager =
+//            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        inputMethodManager.showSoftInput(bind.buscarEt, InputMethodManager.SHOW_IMPLICIT)
+//    }
+//
+//    fun ocultarBusqueda() {
+//        bind.close.visibility = View.INVISIBLE
+//        bind.lupa.visibility = View.VISIBLE
+//        bind.buscarEt.visibility = View.INVISIBLE
+//        bind.opciones.visibility = View.VISIBLE
+//        val inputMethodManager =
+//            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        inputMethodManager.hideSoftInputFromWindow(bind.buscarEt.windowToken, 0)
+//        bind.buscarEt.setText("")
+//    }
 
     companion object {
         /**
