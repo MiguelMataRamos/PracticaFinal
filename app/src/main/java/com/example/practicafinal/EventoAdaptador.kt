@@ -96,6 +96,8 @@ class EventoAdaptador(
                             bundle.putString("imagen", item_actual.imagen)
                             bundle.putString("aforomax", item_actual.aforomax.toString())
                             bundle.putString("id", item_actual.id)
+                            bundle.putString("aforoactual", item_actual.aforoactual)
+                            bundle.putStringArrayList("lista_asistentes", item_actual.lista_asistentes as ArrayList<String>)
 
                             // Crear una instancia del fragment, establecer los argumentos y abrir el fragment
                             val fragment = EditarEventoFragment()

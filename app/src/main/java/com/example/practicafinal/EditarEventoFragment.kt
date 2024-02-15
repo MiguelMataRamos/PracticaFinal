@@ -77,6 +77,7 @@ class EditarEventoFragment : Fragment(), CoroutineScope {
         val aforomax = arguments?.getString("aforomax")
         val id = arguments?.getString("id")
 
+
         bind.etNombre.setText(nombre)
         bind.etFecha.setText(fecha)
         bind.etPrecio.setText(precio)
@@ -122,6 +123,8 @@ class EditarEventoFragment : Fragment(), CoroutineScope {
                 var fecha = bind.etFecha.text.toString()
                 var aforo = bind.etAforo.text.toString()
                 var id_generado: String? = arguments?.getString("id")
+                val aforoactual = arguments?.getString("aforoactual")
+                val lista_asistentes = arguments?.getStringArrayList("lista_asistentes")
 
                 var url_foto_firebase: String
                 launch {
@@ -136,9 +139,10 @@ class EditarEventoFragment : Fragment(), CoroutineScope {
                         nombre,
                         fecha,
                         precio.toDouble(),
-                        "0",
+                        aforoactual.toString(),
                         aforo,
-                        url_foto_firebase
+                        url_foto_firebase,
+                        lista_asistentes
                     )
 
                     Utilidades.subirEvento(nuevoevento)
