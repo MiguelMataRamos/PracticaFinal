@@ -4,17 +4,24 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.net.toUri
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.practicafinal.databinding.FragmentUserBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.values
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +47,10 @@ class UserFragment : Fragment(), CoroutineScope {
     private var urlimg: Uri? = null
     private lateinit var db_ref :DatabaseReference
     private lateinit var contexto : Context
+    private lateinit var recyclerEventos: RecyclerView
+    private lateinit var adaptadorEventos: EventoAdaptador
+    private lateinit var listaEventos: MutableList<Evento>
+
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -57,6 +68,31 @@ class UserFragment : Fragment(), CoroutineScope {
         bind = FragmentUserBinding.inflate(layoutInflater)
 
         db_ref = FirebaseDatabase.getInstance().reference
+
+        listaEventos = mutableListOf()
+        //se coge la lista de productos de la base de datos
+        db_ref.child("Tienda").child("Eventos").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listaEventos.clear()
+                snapshot.children.forEach { hijo: DataSnapshot? ->
+                    val pojoevento = hijo!!.getValue(Evento::class.java)
+                    Log.v("pojoevento", pojoevento.toString())
+
+                    listaEventos.add(pojoevento!!)
+
+
+                }
+                recyclerEventos.adapter?.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println(error.message)
+            }
+        })
+        Log.v("listaEventos", listaEventos.toString())
+
+
+
 
         launch {
             var foto = db_ref.child("Tienda").child("Usuarios").child(FirebaseAuth.getInstance().uid.toString()).child("foto").get().await().value.toString()
@@ -83,8 +119,18 @@ class UserFragment : Fragment(), CoroutineScope {
         savedInstanceState: Bundle?
     ): View? {
 
-        bind = FragmentUserBinding.inflate(inflater, container, false)
+        bind = FragmentUserBinding.inflate(layoutInflater)
         db_ref = FirebaseDatabase.getInstance().reference
+
+        //se crea el adaptador y se le pasa la lista de productos
+        adaptadorEventos = EventoAdaptador(listaEventos)
+        //se le pasa el adaptador al recycler
+        recyclerEventos = bind.scEventosUser
+        recyclerEventos.adapter = adaptadorEventos
+        //se le pasa el layout manager para que sea horizontaL
+        recyclerEventos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        //se le dice que el tamaño del recycler no cambiara
+        recyclerEventos.setHasFixedSize(true)
 
         // Inflate the layout for this fragment
         return bind.root

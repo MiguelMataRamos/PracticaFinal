@@ -53,6 +53,31 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tus cartas"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/txt_cartas"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_margin="20dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sc_cartas_user"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scrollbars="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/txt_cartas"
+            tools:listitem="@layout/item_carta"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:translationZ="200dp"
+            />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ver_cartas"
             android:layout_width="wrap_content"
@@ -61,7 +86,32 @@
             android:text="Ver tus cartas"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header"/>
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Eventos a los que te has apuntado"
+            app:layout_constraintTop_toBottomOf="@id/sc_cartas_user"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/txt_eventos"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_margin="20dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sc_eventos_user"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scrollbars="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/txt_eventos"
+            tools:listitem="@layout/item_evento"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:translationZ="200dp"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

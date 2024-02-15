@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practicafinal.databinding.FragmentEventosBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -58,11 +59,14 @@ class EventosFragment : Fragment() {
                 snapshot.children.forEach { hijo: DataSnapshot? ->
                     val pojoevento = hijo!!.getValue(Evento::class.java)
 
-                    var sp = PreferenceManager.getDefaultSharedPreferences(context)
+                    var id_user = FirebaseAuth.getInstance().uid!!
+
+                    var sp = PreferenceManager.getDefaultSharedPreferences(requireContext())
                     var admin = sp.getString("admin", "0")
-                    if (admin == "0") {
-                        if (pojoevento?.aforoactual!! < pojoevento?.aforomax!!){
-                            lista.add(pojoevento!!)
+
+                    if(admin == "0") {
+                        if (!pojoevento!!.lista_asistentes!!.contains(id_user) && pojoevento!!.aforoactual.toInt() < pojoevento!!.aforomax!!.toInt()) {
+                            lista.add(pojoevento)
                         }
                     }else{
                         lista.add(pojoevento!!)

@@ -191,8 +191,8 @@ class Utilidades(context: Context) {
         }
 
         fun apuntarseEvento(itemActual: Evento, contexto: Context) {
-            var aforo = itemActual.aforoactual!!.toInt()
 
+            var aforo = itemActual.aforoactual!!.toInt()
             itemActual.aforoactual = (aforo + 1).toString()
 
             if (itemActual.lista_asistentes?.get(0) =="") {
