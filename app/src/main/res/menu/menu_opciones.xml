@@ -3,5 +3,7 @@
     <item
         android:id="@+id/cerrarsesion"
         android:title="Cerrar sesion" />
-
+    <item
+        android:id="@+id/autor"
+        android:title="Autor" />
 </menu>

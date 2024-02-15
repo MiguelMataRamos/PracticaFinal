@@ -1,12 +1,17 @@
 package com.example.practicafinal
 
+import android.Manifest
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
@@ -14,6 +19,9 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -184,6 +192,12 @@ class Utilidades(context: Context) {
                         true
                     }
 
+                    R.id.autor -> {
+                        var intent = Intent(context, Autor::class.java)
+                        context.startActivity(intent)
+                        true
+                    }
+
                     else -> false
                 }
             }
@@ -195,9 +209,9 @@ class Utilidades(context: Context) {
             var aforo = itemActual.aforoactual!!.toInt()
             itemActual.aforoactual = (aforo + 1).toString()
 
-            if (itemActual.lista_asistentes?.get(0) =="") {
+            if (itemActual.lista_asistentes?.get(0) == "") {
                 itemActual.lista_asistentes!![0] = FirebaseAuth.getInstance().uid.toString()
-            }else{
+            } else {
                 itemActual.lista_asistentes?.add(FirebaseAuth.getInstance().uid.toString())
             }
 

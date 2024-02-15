@@ -1,9 +1,13 @@
 package com.example.practicafinal
 
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.provider.Settings.Global.getString
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -176,6 +180,7 @@ class CartaAdaptador(
                 Utilidades.db_ref.child("Tienda").child("Cartas").child(item_actual.id!!)
                     .child("disponible")
                     .setValue("2")
+
 
             }
             builder.setNegativeButton("No") { dialog, which ->

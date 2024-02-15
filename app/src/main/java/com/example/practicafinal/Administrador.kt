@@ -1,10 +1,22 @@
 package com.example.practicafinal
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.concurrent.atomic.AtomicInteger
 
 class Administrador : AppCompatActivity() {
     lateinit var navegation: BottomNavigationView
@@ -56,7 +68,10 @@ class Administrador : AppCompatActivity() {
             addToBackStack("replacement")
         }
 
+
     }
+
+
 
     override fun onBackPressed() {
         cerrarApp()
