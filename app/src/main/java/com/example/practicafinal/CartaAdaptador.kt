@@ -54,7 +54,7 @@ class CartaAdaptador(
         holder.categoria.text = item_actual.categoria
 
         if (Utilidades.cogerAdmin(contexto) == "0") {
-            if (fragmentoActual == "CartasUserFragment") {
+            if (fragmentoActual == "user") {
                 holder.comprar.visibility = View.GONE
             }else{
                 holder.comprar.visibility = View.VISIBLE

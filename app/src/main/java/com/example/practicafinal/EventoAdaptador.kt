@@ -17,7 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.FirebaseDatabase
 
-class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
+class EventoAdaptador(
+    private var lista_eventos: MutableList<Evento>,
+    private val fragmentoActual: String
+) :
     RecyclerView.Adapter<EventoAdaptador.EventoViewHolder>(), Filterable {
     private lateinit var contexto: Context
     private var lista_filtrada = lista_eventos
@@ -77,7 +80,7 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
             .into(holder.img)
 
         //comprueba si el usuario actual es admin
-        if (Utilidades.cogerAdmin(contexto) == "1"){
+        if (Utilidades.cogerAdmin(contexto) == "1") {
             holder.itemView.setOnLongClickListener {
                 val popupMenu = PopupMenu(contexto, it)
                 popupMenu.menuInflater.inflate(R.menu.menu_edit_del, popupMenu.menu)
@@ -118,7 +121,8 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
                                 //se elimina el objeto de la lista
                                 lista_filtrada.removeAt(position)
                                 notifyDataSetChanged()
-                                Toast.makeText(contexto, "Evento eliminada", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(contexto, "Evento eliminada", Toast.LENGTH_SHORT)
+                                    .show()
                             }
                             builder.setNegativeButton("No") { dialog, which ->
                                 //se cancela la eliminacion
@@ -137,8 +141,13 @@ class EventoAdaptador(private var lista_eventos: MutableList<Evento>) :
 
         }
 
-        holder.unirse.setOnClickListener {
-            Utilidades.apuntarseEvento(item_actual, contexto)
+
+        if (fragmentoActual == "user"){
+            holder.unirse.visibility = View.GONE
+        }else{
+            holder.unirse.setOnClickListener {
+                Utilidades.apuntarseEvento(item_actual, contexto)
+            }
         }
 
     }

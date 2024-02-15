@@ -45,11 +45,15 @@ class UserFragment : Fragment(), CoroutineScope {
 
     private lateinit var bind: FragmentUserBinding
     private var urlimg: Uri? = null
-    private lateinit var db_ref :DatabaseReference
-    private lateinit var contexto : Context
+    private lateinit var db_ref: DatabaseReference
+    private lateinit var contexto: Context
     private lateinit var recyclerEventos: RecyclerView
     private lateinit var adaptadorEventos: EventoAdaptador
     private lateinit var listaEventos: MutableList<Evento>
+
+    private lateinit var recyclerCartas: RecyclerView
+    private lateinit var adaptadorCartas: CartaAdaptador
+    private lateinit var listaCartas: MutableList<Carta>
 
 
     // TODO: Rename and change types of parameters
@@ -76,7 +80,6 @@ class UserFragment : Fragment(), CoroutineScope {
                 listaEventos.clear()
                 snapshot.children.forEach { hijo: DataSnapshot? ->
                     val pojoevento = hijo!!.getValue(Evento::class.java)
-                    Log.v("pojoevento", pojoevento.toString())
 
                     listaEventos.add(pojoevento!!)
 
@@ -89,20 +92,71 @@ class UserFragment : Fragment(), CoroutineScope {
                 println(error.message)
             }
         })
-        Log.v("listaEventos", listaEventos.toString())
+
+        listaCartas = mutableListOf()
+        //se coge la lista de cartas que pertenecen al usuario actual
+        //recorre cada pedido y si la id del cliente es igual a la del usriaio actual se añade a la lista de cartas dicha carta la cual se cogera de la base de datos
+        db_ref.child("Tienda").child("Pedidos").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val pojopedido = snapshot.getValue(Pedido::class.java)
+                if (pojopedido!!.idusuario == FirebaseAuth.getInstance().uid.toString() && pojopedido.estado != "0") {
+                    //cogemos una carta especifica de la base de datos y la guardamos como objeto carta
+                    db_ref.child("Tienda").child("Cartas").child(pojopedido.idcarta!!)
+                        .addValueEventListener(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                val pojocarta = snapshot.getValue(Carta::class.java)
+                                listaCartas.add(pojocarta!!)
+                                adaptadorCartas.notifyDataSetChanged()
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                Log.e("ERROR", error.message)
+                            }
+                        })
+                }
+                listaCartas.clear()
+                snapshot.children.forEach { hijo: DataSnapshot? ->
+                    //comprueba que el pedido pertenece al usuario actual
+                    if (hijo!!.child("idusuario").value.toString() == FirebaseAuth.getInstance().uid.toString()
+                        && hijo.child("estado").value.toString() != "0"
+                    ) {
+                        //se coge la carta del pedido
+                        db_ref.child("Tienda").child("Cartas")
+                            .child(hijo.child("idcarta").value.toString())
+                            .addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val pojocarta = snapshot.getValue(Carta::class.java)
+                                    listaCartas.add(pojocarta!!)
+                                    adaptadorCartas.notifyDataSetChanged()
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Log.e("ERROR", error.message)
+                                }
+                            })
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("ERROR", error.message)
+            }
+        })
 
 
 
 
         launch {
-            var foto = db_ref.child("Tienda").child("Usuarios").child(FirebaseAuth.getInstance().uid.toString()).child("foto").get().await().value.toString()
+            var foto = db_ref.child("Tienda").child("Usuarios")
+                .child(FirebaseAuth.getInstance().uid.toString()).child("foto").get()
+                .await().value.toString()
             if (foto != "null") {
                 Glide.with(requireContext())
                     .load(foto)
                     .apply(Utilidades.opcionesGlide(requireContext()))
                     .transition(Utilidades.transicion)
                     .into(bind.foto)
-            }else{
+            } else {
                 bind.foto.setImageResource(R.drawable.fotodef)
             }
 
@@ -123,14 +177,28 @@ class UserFragment : Fragment(), CoroutineScope {
         db_ref = FirebaseDatabase.getInstance().reference
 
         //se crea el adaptador y se le pasa la lista de productos
-        adaptadorEventos = EventoAdaptador(listaEventos)
+        adaptadorEventos = EventoAdaptador(listaEventos,"user")
         //se le pasa el adaptador al recycler
         recyclerEventos = bind.scEventosUser
         recyclerEventos.adapter = adaptadorEventos
         //se le pasa el layout manager para que sea horizontaL
-        recyclerEventos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerEventos.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         //se le dice que el tamaño del recycler no cambiara
         recyclerEventos.setHasFixedSize(true)
+
+
+        //se crea el adaptador y se le pasa la lista de productos
+        adaptadorCartas = CartaAdaptador(listaCartas,"user")
+        //se le pasa el adaptador al recycler
+        recyclerCartas = bind.scCartasUser
+        recyclerCartas.adapter = adaptadorCartas
+        //se le pasa el layout manager para que sea horizontaL
+        recyclerCartas.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        //se le dice que el tamaño del recycler no cambiara
+        recyclerCartas.setHasFixedSize(true)
+
 
         // Inflate the layout for this fragment
         return bind.root
@@ -153,22 +221,12 @@ class UserFragment : Fragment(), CoroutineScope {
 
                         true
                     }
+
                     else -> false
                 }
             }
             popupMenu.show()
         }
-
-        bind.verCartas.setOnClickListener {
-            //abrir fragment de cartasuser
-            val fragment = CartasUserFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-
-        }
-
 
 
     }
@@ -181,7 +239,9 @@ class UserFragment : Fragment(), CoroutineScope {
             var urlimg_firebase: String
             launch {
                 urlimg_firebase = Utilidades.guardarImagenUser(urlimg!!)
-                db_ref.child("Tienda").child("Usuarios").child(FirebaseAuth.getInstance().uid.toString()).child("foto").setValue(urlimg_firebase)
+                db_ref.child("Tienda").child("Usuarios")
+                    .child(FirebaseAuth.getInstance().uid.toString()).child("foto")
+                    .setValue(urlimg_firebase)
             }
             bind.foto.setImageURI(urlimg)
         }

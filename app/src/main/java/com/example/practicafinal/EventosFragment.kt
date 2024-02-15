@@ -84,7 +84,7 @@ class EventosFragment : Fragment() {
 
 
         //se crea el adaptador y se le pasa la lista de productos
-        adaptador = EventoAdaptador(lista)
+        adaptador = EventoAdaptador(lista,"eventos")
         //se le pasa el adaptador al recycler
         recycler = bind.scEventos
         recycler.adapter = adaptador
