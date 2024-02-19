@@ -74,16 +74,15 @@ class UserFragment : Fragment(), CoroutineScope {
         db_ref = FirebaseDatabase.getInstance().reference
 
         listaEventos = mutableListOf()
-        //se coge la lista de productos de la base de datos
+        //se coge la lista de eventos de la base de datos
         db_ref.child("Tienda").child("Eventos").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 listaEventos.clear()
                 snapshot.children.forEach { hijo: DataSnapshot? ->
                     val pojoevento = hijo!!.getValue(Evento::class.java)
-
-                    listaEventos.add(pojoevento!!)
-
-
+                    if (pojoevento!!.lista_asistentes!!.contains(FirebaseAuth.getInstance().uid!!)){
+                        listaEventos.add(pojoevento!!)
+                    }
                 }
                 recyclerEventos.adapter?.notifyDataSetChanged()
             }
@@ -92,6 +91,7 @@ class UserFragment : Fragment(), CoroutineScope {
                 println(error.message)
             }
         })
+
 
         listaCartas = mutableListOf()
         //se coge la lista de cartas que pertenecen al usuario actual
