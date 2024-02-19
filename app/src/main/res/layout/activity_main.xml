@@ -33,7 +33,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Login"
+                    android:text="@string/login"
                     android:gravity="center"
                     android:textSize="30sp"
                     android:id="@+id/textViewLogin"
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/textInputLayoutEmail"
                     android:layout_gravity="center"
-                    android:hint="Correo electrónico"
+                    android:hint="@string/correo_electronico"
                     app:layout_constraintTop_toBottomOf="@id/textViewLogin"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/textInputLayoutPass"
                     android:layout_gravity="center"
-                    android:hint="Contraseña"
+                    android:hint="@string/contrasenia"
                     app:layout_constraintTop_toBottomOf="@id/textInputLayoutEmail"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +84,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Iniciar sesión"
+                    android:text="@string/iniciar_sesion"
                     android:id="@+id/buttonLogin"
                     app:layout_constraintTop_toBottomOf="@id/textInputLayoutPass"
                     app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +97,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¿No tienes cuenta?"
+                    android:text="@string/no_tienes_cuenta"
                     android:id="@+id/textViewNoCuenta"
                     app:layout_constraintTop_toBottomOf="@id/buttonLogin"
                     app:layout_constraintStart_toStartOf="parent"
@@ -110,13 +110,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¿Has olvidado tu contraseña?"
+                    android:text="@string/has_olvidado_tu_contrasenia"
                     android:id="@+id/textViewOlvidado"
                     app:layout_constraintTop_toBottomOf="@id/textViewNoCuenta"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/_10dp"
                     android:textColor="@color/blue"
                     />
 

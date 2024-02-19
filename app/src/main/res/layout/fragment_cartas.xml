@@ -83,7 +83,8 @@
                 app:layout_constraintEnd_toStartOf="@id/close"
                 app:layout_constraintStart_toEndOf="@id/foto_menu"
                 app:layout_constraintTop_toTopOf="parent"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:inputType="text" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -102,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black2"
-            android:text="Agregar carta"
+            android:text="@string/agregar_carta"
             android:translationZ="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

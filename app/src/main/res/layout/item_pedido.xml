@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Id Cliente -> "
+            android:text="@string/id_cliente"
             android:id="@+id/txt_id_cliente"
             app:layout_constraintTop_toBottomOf="@id/id_pedido"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +49,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Id Carta -> "
+            android:text="@string/id_carta"
             android:id="@+id/txt_id_carta"
             app:layout_constraintTop_toBottomOf="@id/txt_id_cliente"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +67,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre de Carta -> "
+            android:text="@string/nombre_de_carta"
             android:id="@+id/txt_nombre_carta"
             app:layout_constraintTop_toBottomOf="@id/txt_id_carta"
             app:layout_constraintStart_toStartOf="parent"

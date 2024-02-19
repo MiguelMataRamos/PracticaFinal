@@ -80,7 +80,7 @@
                 android:id="@+id/etNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre"
+                android:hint="@string/nombre"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -112,7 +112,7 @@
                 android:id="@+id/etPrecio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Precio"
+                android:hint="@string/precio"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,7 +120,7 @@
             android:id="@+id/chkDisponible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Disponible"
+            android:text="@string/disponible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilPrecio"
@@ -133,7 +133,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black2"
-            android:text="Crear carta"
+            android:text="@string/crear_carta"
             app:layout_constraintBottom_toBottomOf="parent" />
 
 

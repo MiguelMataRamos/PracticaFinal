@@ -50,7 +50,7 @@
                 android:id="@+id/etNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre"
+                android:hint="@string/nombre"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -71,7 +71,7 @@
                 android:id="@+id/etPrecio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Precio"
+                android:hint="@string/precio"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,7 +89,7 @@
                 android:id="@+id/etAforo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Aforo máximo"
+                android:hint="@string/aforo_maximo"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,7 +106,7 @@
                 android:id="@+id/etFecha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Fecha"
+                android:hint="@string/fecha"
                 android:inputType="date"
                 android:focusable="false"/>
 
@@ -117,7 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black2"
-            android:text="Editar evento"
+            android:text="@string/editar_evento"
             app:layout_constraintBottom_toBottomOf="parent" />
 
 
