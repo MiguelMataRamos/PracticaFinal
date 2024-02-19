@@ -39,4 +39,7 @@
     <string name="id_cliente"><![CDATA[Id Cliente ->]]></string>
     <string name="id_carta"><![CDATA[Id Carta ->]]></string>
     <string name="nombre_de_carta"><![CDATA[Nombre de Carta ->]]></string>
+    <string name="simbolo_euro">€</string>
+    <string name="vender">Vender</string>
+    <string name="denegar">Denegar</string>
 </resources>
